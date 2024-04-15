@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import "./Sidebar.css";
 
 function Sidebar() {
-  return (<aside>
+  return (
+    <aside>
     <nav className="navbar">
       <ul className="navbar-nav">
         <li className="nav-item">
@@ -39,7 +40,8 @@ function Sidebar() {
         </li>
       </ul>
     </nav>
-  </aside>);
+  </aside>
+  );
 }
 
 export default Sidebar;
