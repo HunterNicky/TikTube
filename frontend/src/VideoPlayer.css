@@ -1,0 +1,12 @@
+.player-container {
+  margin: 1.5rem;
+}
+
+.player-container p {
+  font-weight: bold;
+}
+
+.player-title {
+  font-size: 1.3rem;
+  margin-top: .5rem;
+}

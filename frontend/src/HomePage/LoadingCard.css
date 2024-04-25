@@ -1,0 +1,37 @@
+.loading-card {
+  margin: .5rem .1rem;
+  overflow: hidden;
+  width: 300px;
+  opacity: .7;
+}
+
+.loading-thumbnail,
+.loading-title,
+.loading-author {
+  border-radius: .8rem;
+  width: 300px;
+  background-color: var(--text-primary);
+  height: 169px;
+  animation: card-loading 1s linear infinite alternate;
+}
+
+.loading-title {
+  margin-top: .5rem;
+  height: 1.2rem;
+}
+
+.loading-author {
+  margin-top: .5rem;
+  width: 100px;
+  height: 1.2rem;
+}
+
+@keyframes card-loading {
+  0% {
+    background-color: hsl(180, 2%, 61%);
+  }
+
+  100% {
+    background-color: hsl(180, 7%, 83%);
+  }
+}
