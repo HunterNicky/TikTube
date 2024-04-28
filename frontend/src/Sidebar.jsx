@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./Sidebar.css";
 
-function Sidebar() {
+function Sidebar({setModal}) {
   return (
     <aside>
     <nav className="navbar">
@@ -31,7 +31,15 @@ function Sidebar() {
           </Link>
         </li>
         <li className="nav-item">
-          <div className="nav-link">
+          <Link to={"/upload"} className="nav-link">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"/>
+            </svg>
+            <span className="link-text">Upload</span>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <div className="nav-link" onClick={() => setModal(true)}>
             <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"/>
             </svg>

@@ -8,7 +8,8 @@
 }
 
 .video-category-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px); 
+  grid-gap: .3rem;
   justify-content: space-between;
 }

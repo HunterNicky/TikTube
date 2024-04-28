@@ -37,18 +37,17 @@
 .search-bar {
   align-items: center;
   background-color: #212121;
-  border-radius: 1rem;
+  border-radius: .8rem;
   display: flex;
   margin-left: auto;
   margin-right: 1.5rem;
-  padding: .5rem;
-  width: 23rem;
+  padding: .4rem;
+  width: 35%;
 }
 
 .search-bar input {
   background-color: transparent;
   border-radius: 1rem;
-  border: none;
   border: none;
   color: var(--text-secondary);
   outline: none;
@@ -61,6 +60,6 @@
   cursor: pointer;
 }
 
-.search-bar input:focus {
-  border: none;
+.search-bar:focus-within {
+  outline: 1px #333333 solid;
 }
