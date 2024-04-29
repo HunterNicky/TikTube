@@ -8,6 +8,8 @@ import java.util.Base64;
 import com.aps.tiktube.model.Access;
 import com.aps.tiktube.model.Token;
 import com.aps.tiktube.model.User;
+import com.aps.tiktube.model.video.Comments;
+import com.aps.tiktube.model.video.Like;
 
 public class TokenManager {
     private static final String TOKENVALUE = "TokenValue";
@@ -68,6 +70,8 @@ public class TokenManager {
     }
 
     public static void updateTokenLastTimeUsed(String tokenValue) {
+        if (tokenValue.equals("unregistered"))
+            return;
         Access<Token> tokenAccess = new Access<>(Token.class);
         Token token = tokenAccess.where(TOKENVALUE, tokenValue).get(0);
         token.setLastTimeUsed(System.currentTimeMillis() / 1000L);
@@ -89,6 +93,24 @@ public class TokenManager {
 
         try {
             switch (type) {
+                case "Views":
+                    Access<com.aps.tiktube.model.video.Views> viewsAccess = new Access<>(
+                            com.aps.tiktube.model.video.Views.class);
+                    userId = viewsAccess.getById(id).getUserId();
+                    viewsAccess.close();
+                    break;
+                case "Like":
+                    Access<Like> likeAccess = new Access<>(
+                            Like.class);
+                    userId = likeAccess.getById(id).getUserId();
+                    likeAccess.close();
+                    break;
+                case "Comment":
+                    Access<Comments> commentAccess = new Access<>(
+                            Comments.class);
+                    userId = commentAccess.getById(id).getUserId();
+                    commentAccess.close();
+                    break;
                 case "Video":
                     Access<com.aps.tiktube.model.video.Video> videoAccess = new Access<>(
                             com.aps.tiktube.model.video.Video.class);
