@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.Document;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +22,7 @@ public class VideoService {
 
     private static final String VIDEONOTFOUND = "Video not found";
     private static final String VIDEOID = "VideoId";
+    private static final String VIDEO = "Video";
 
     /**
      * Upload a video
@@ -36,7 +39,7 @@ public class VideoService {
 
         Video video = new Video();
 
-        final String videoId = userFileService.getFileId(file, video, "Video");
+        final String videoId = userFileService.getFileId(file, video, VIDEO);
 
         video.setVideoId(videoId);
         video.setDescripton(description);
@@ -238,5 +241,147 @@ public class VideoService {
         List<Comments> comments = commentsAccess.where(Arrays.asList(VIDEOID), Arrays.asList(videoId));
         commentsAccess.close();
         return Integer.toString(comments.size());
+    }
+
+    /**
+     * Change the description of a video
+     * 
+     * @param videoId
+     * @param description
+     * @return Result
+     */
+    public String changeDescription(String videoId, String description) {
+        Access<Video> videoAccess = new Access<>(Video.class);
+        Video video = videoAccess.getById(videoId);
+        videoAccess.close();
+
+        if (video == null) {
+            return VIDEONOTFOUND;
+        }
+
+        video.setDescripton(description);
+        video.save();
+
+        return "Description changed";
+    }
+
+    /**
+     * Change the title of a video
+     * 
+     * @param videoId
+     * @param title
+     * @return Result
+     */
+    public String changeTitle(String videoId, String title) {
+        Access<Video> videoAccess = new Access<>(Video.class);
+        Video video = videoAccess.getById(videoId);
+        videoAccess.close();
+
+        if (video == null) {
+            return VIDEONOTFOUND;
+        }
+
+        video.setVideoName(title);
+        video.save();
+
+        return "Title changed";
+    }
+
+    /**
+     * Get the information of a video
+     * 
+     * @param videoId
+     * @return Video information
+     */
+    public String getVideoInfo(String videoId) {
+        Access<Video> videoAccess = new Access<>(Video.class);
+        Video video = videoAccess.getById(videoId);
+        videoAccess.close();
+
+        if (video == null) {
+            return VIDEONOTFOUND;
+        }
+
+        JSONObject videoInfo = new JSONObject();
+
+        videoInfo.put("Title", video.getVideoName());
+        videoInfo.put("Description", video.getDescripton());
+        videoInfo.put("Publish Date", video.getPublishDate());
+        videoInfo.put("Number of Views", numOfViews(videoId));
+        videoInfo.put("Number of Likes", numOfLikes(videoId));
+
+        return videoInfo.toString();
+    }
+
+    /**
+     * Get the comments of a video
+     * 
+     * @param videoId
+     * @return Comments
+     */
+    public String getComments(String videoId) {
+        Access<Comments> commentsAccess = new Access<>(Comments.class);
+        List<Comments> comments = commentsAccess.where(Arrays.asList(VIDEOID), Arrays.asList(videoId));
+        commentsAccess.close();
+
+        JSONObject commentsInfo = new JSONObject();
+
+        for (Comments comment : comments) {
+            JSONObject commentInfo = new JSONObject();
+            commentInfo.put("User", comment.getUserId());
+            commentInfo.put("Comment", comment.getComment());
+            commentInfo.put("Date", comment.getData());
+            commentsInfo.put(comment.getId(), commentInfo);
+        }
+
+        return commentsInfo.toString();
+    }
+
+    /**
+     * Get all the videos
+     * 
+     * @return Videos
+     */
+    public String getAllVideos() {
+        Access<Video> videoAccess = new Access<>(Video.class);
+        List<Document> videos = videoAccess.getCollectionAsList(VIDEO);
+        videoAccess.close();
+
+        JSONObject videosInfo = new JSONObject();
+
+        for (Document video : videos) {
+            JSONObject videoInfo = new JSONObject();
+            videoInfo.put("Title", video.get("videoName"));
+            videoInfo.put("Description", video.get("description"));
+            videoInfo.put("Publish Date", video.get("publishDate"));
+            videoInfo.put("Number of Views", numOfViews(video.get(VIDEOID).toString()));
+            videoInfo.put("Number of Likes", numOfLikes(video.get(VIDEOID).toString()));
+            videosInfo.put(video.get(VIDEOID).toString(), videoInfo);
+        }
+
+        return videosInfo.toString();
+    }
+
+    /**
+     * Get the videos of a user liked
+     * 
+     * @param token
+     * @return Videos liked
+     */
+    public String getUserLikes(String token) {
+        User user = TokenManager.getUser(token);
+        Access<Like> likeAccess = new Access<>(Like.class);
+        List<Like> likes = likeAccess.where(Arrays.asList("userId"), Arrays.asList(user.getId()));
+        likeAccess.close();
+
+        JSONObject likesInfo = new JSONObject();
+
+        for (Like like : likes) {
+            JSONObject likeInfo = new JSONObject();
+            likeInfo.put(VIDEO, like.getVideoId());
+            likesInfo.put(like.getId(), likeInfo);
+        }
+
+        return likesInfo.toString();
     }
 }
