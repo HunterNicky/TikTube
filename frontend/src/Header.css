@@ -30,8 +30,19 @@
 
 .logo {
   color: var(--text-primary);
-  margin-left: .3rem;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  width: 35px; 
+  height: auto;
+}
+
+.logo h2 {
+  margin-left: .4rem;
+  font-size: 1.8rem;
 }
 
 .search-bar {

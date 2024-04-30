@@ -15,6 +15,7 @@ function Header() {
           </li>
         </ul>
         <Link to={"/"} className="logo">
+          <img src={"../logo.png"} className="logo-img"/>
           <h2>TikTube</h2>
         </Link>
         <div className="search-bar">
