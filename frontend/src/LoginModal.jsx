@@ -17,7 +17,6 @@ function LoginModal({setModal}) {
           <footer>
             <div>
               <button type="button" className="auth-button">Register</button>
-              <button type="button" className="auth-button">Forgot</button>
             </div>
           </footer>
         </form>
