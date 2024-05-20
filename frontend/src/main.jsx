@@ -9,20 +9,20 @@ import FavoritesPage from "./components/FavoritesPage.jsx";
 import UploadPage from "./components/UploadPage.jsx";
 import VideoPlayer from "./components/VideoPlayer.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
-import LoginModal from "./components/LoginModal.jsx";
+import AuthModal from "./components/AuthModal.jsx";
 import "./index.css";
 
 function Navigation() {
   const [modal, setModal] = useState(false);
- 
+
   return (
     <>
       <Header />
-      <Sidebar setModal={setModal}/>
+      <Sidebar setModal={setModal} />
       <main>
         <Outlet />
       </main>
-      {modal && <LoginModal setModal={setModal}/>}
+      {modal && <AuthModal setModal={setModal} />}
     </>
   );
 }
@@ -35,26 +35,26 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />
+        element: <HomePage />,
       },
       {
         path: "favorites",
-        element: <FavoritesPage />
+        element: <FavoritesPage />,
       },
       {
         path: "upload",
-        element: <UploadPage />
+        element: <UploadPage />,
       },
       {
         path: "/watch/:id",
-        element: <VideoPlayer />
-      }
-    ]
-  }
+        element: <VideoPlayer />,
+      },
+    ],
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>,
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );
