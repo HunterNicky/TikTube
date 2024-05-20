@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./VideoCard.css";
 
-function VideoCard({id, title, author, views, thumbnail}) {
+function VideoCard({ id, title, author, views, thumbnail }) {
   return (
     <Link to={`/watch/` + id} className="video-card">
       <img src={thumbnail} alt="" className="video-thumbnail" />
