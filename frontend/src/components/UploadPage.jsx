@@ -1,4 +1,4 @@
-import uploadIcon from "./assets/cloud-upload.svg";
+import uploadIcon from "../assets/cloud-upload.svg";
 import "./UploadPage.css";
 
 function UploadPage() {

@@ -1,5 +1,5 @@
 import VideoSection from "./HomePage/VideoSection";
-import trending from "./assets/favorites.json";
+import trending from "../assets/favorites.json";
 
 function FavoritesPage() {
   return (

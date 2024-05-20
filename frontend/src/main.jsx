@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
-import Header from "./Header.jsx";
-import Sidebar from "./Sidebar.jsx";
-import HomePage from "./HomePage/HomePage.jsx";
-import FavoritesPage from "./FavoritesPage.jsx";
-import UploadPage from "./UploadPage.jsx";
-import VideoPlayer from "./VideoPlayer.jsx";
-import ErrorPage from "./ErrorPage.jsx";
-import LoginModal from "./LoginModal.jsx";
+import Header from "./components/Header.jsx";
+import Sidebar from "./components/Sidebar.jsx";
+import HomePage from "./components/HomePage/HomePage.jsx";
+import FavoritesPage from "./components/FavoritesPage.jsx";
+import UploadPage from "./components/UploadPage.jsx";
+import VideoPlayer from "./components/VideoPlayer.jsx";
+import ErrorPage from "./components/ErrorPage.jsx";
+import LoginModal from "./components/LoginModal.jsx";
 import "./index.css";
 
 function Navigation() {

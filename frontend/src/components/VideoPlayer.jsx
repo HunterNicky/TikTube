@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import videos from "./assets/videos.json"
+import videos from "../assets/videos.json"
 import "./VideoPlayer.css";
 
 function VideoPlayer() {
