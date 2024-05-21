@@ -10,20 +10,21 @@ import UploadPage from "./components/UploadPage.jsx";
 import VideoPlayer from "./components/VideoPlayer.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import AuthModal from "./components/AuthModal.jsx";
+import AuthProvider from "./hooks/AuthProvider.jsx";
 import "./index.css";
 
 function Navigation() {
   const [modal, setModal] = useState(false);
 
   return (
-    <>
+    <AuthProvider>
       <Header />
       <Sidebar setModal={setModal} />
       <main>
         <Outlet />
       </main>
       {modal && <AuthModal setModal={setModal} />}
-    </>
+    </AuthProvider>
   );
 }
 
