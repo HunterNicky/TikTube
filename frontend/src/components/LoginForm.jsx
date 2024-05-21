@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function LoginForm() {
   const [input, setInput] = useState({
-    username: "",
+    userName: "",
     password: "",
   });
 
@@ -25,7 +25,7 @@ function LoginForm() {
       <div>
         <input
           type="text"
-          name="username"
+          name="userName"
           placeholder="Username"
           minLength="6"
           maxLength="12"

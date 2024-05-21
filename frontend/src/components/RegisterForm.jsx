@@ -3,7 +3,7 @@ import { useState } from "react";
 function RegisterForm() {
   const [input, setInput] = useState({
     email: "",
-    username: "",
+    userName: "",
     password: "",
   });
 
@@ -48,7 +48,7 @@ function RegisterForm() {
       <div>
         <input
           type="text"
-          name="username"
+          name="userName"
           placeholder="Username"
           minLength="6"
           maxLength="12"
