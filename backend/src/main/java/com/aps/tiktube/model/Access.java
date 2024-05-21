@@ -273,7 +273,7 @@ public class Access<T extends Entity<T>> {
             GridFSFile gridFSFile = findGridFSFileById(gridFSBucket, id);
 
             if (gridFSFile != null) {
-                File file = new File(path + "/" + id + "." + gridFSFile.getMetadata().get("type"));
+                File file = new File(path + File.separator + id + "." + gridFSFile.getMetadata().get("type"));
                 try (OutputStream outputStream = new FileOutputStream(file)) {
                     gridFSBucket.downloadToStream(new ObjectId(id), outputStream);
                     return file.toPath();
