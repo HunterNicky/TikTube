@@ -1,7 +1,11 @@
 import VideoSection from "./VideoSection";
 import trending from "../../assets/trending.json";
+import { setLocalStorage, useAuth } from "../../hooks/AuthProvider";
 
 function HomePage() {
+  const { user } = useAuth();
+  setLocalStorage(user);
+
   return (
     <>
       <VideoSection data={trending} categoryTitle={"Trending"} />

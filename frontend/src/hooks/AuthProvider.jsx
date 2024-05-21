@@ -1,15 +1,16 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(undefined);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(localStorage.getItem("tiktube") | "UNREGISTERED");
   const logIn = async (data) => {};
 
   const logOut = () => {
     setUser(undefined);
-    setToken("");
+    setToken("UNREGISTERED");
+    localStorage.setItem("tiktube", "UNREGISTERED");
   };
 
   return (
@@ -21,6 +22,11 @@ function AuthProvider({ children }) {
 
 export function useAuth() {
   return useContext(AuthContext);
+}
+
+export function setLocalStorage(user) {
+  if (user == undefined)
+    localStorage.setItem("tiktube", "UNREGISTERED");
 }
 
 export default AuthProvider;

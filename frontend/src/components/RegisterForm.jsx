@@ -2,6 +2,7 @@ import { useState } from "react";
 
 function RegisterForm() {
   const [input, setInput] = useState({
+    email: "",
     username: "",
     password: "",
   });
@@ -14,9 +15,21 @@ function RegisterForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //API call
+    const baseUrl = import.meta.env.VITE_BACKEND;
+   
+    try {
+      const response = await fetch(baseUrl + "/createaccount", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -24,11 +37,21 @@ function RegisterForm() {
       <header>Register</header>
       <div>
         <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          minLength="6"
+          maxLength="12"
+          onChange={(e) => handleInput(e)}
+        />
+      </div>
+      <div>
+        <input
           type="text"
           name="username"
           placeholder="Username"
-          minlength="6"
-          maxlength="12"
+          minLength="6"
+          maxLength="12"
           onChange={(e) => handleInput(e)}
         />
       </div>
@@ -37,8 +60,8 @@ function RegisterForm() {
           type="password"
           name="password"
           placeholder="Password"
-          minlength="6"
-          maxlength="24"
+          minLength="6"
+          maxLength="24"
           onChange={(e) => handleInput(e)}
         />
       </div>

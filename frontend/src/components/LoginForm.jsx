@@ -27,8 +27,8 @@ function LoginForm() {
           type="text"
           name="username"
           placeholder="Username"
-          minlength="6"
-          maxlength="12"
+          minLength="6"
+          maxLength="12"
           onChange={(e) => handleInput(e)}
         />
       </div>
@@ -37,8 +37,8 @@ function LoginForm() {
           type="password"
           name="password"
           placeholder="Password"
-          minlength="6"
-          maxlength="24"
+          minLength="6"
+          maxLength="24"
           onChange={(e) => handleInput(e)}
         />
       </div>
