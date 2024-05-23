@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import "./Sidebar.css";
+import { useAuth } from "../hooks/AuthProvider";
 
 function Sidebar({ setModal }) {
+  const auth = useAuth();
+
   return (
     <aside>
       <nav className="navbar">
@@ -86,24 +89,45 @@ function Sidebar({ setModal }) {
           </li>
           <li className="nav-item">
             <div className="nav-link" onClick={() => setModal(true)}>
-              <svg
-                className="w-6 h-6 text-gray-800 dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"
-                />
-              </svg>
-              <span className="link-text">Login</span>
+              {
+                auth.user == undefined ?
+                <svg
+                  className="w-6 h-6 text-gray-800 dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2"
+                  />
+                </svg>
+                :
+                <svg
+                  className="w-6 h-6 text-gray-800 dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              }
+              <span className="link-text">
+                {auth.user == undefined ? "Login" : auth.user}
+              </span>
             </div>
           </li>
         </ul>

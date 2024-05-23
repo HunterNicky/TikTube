@@ -1,10 +1,15 @@
 import { useState } from "react";
+import { useAuth } from "../hooks/AuthProvider";
 
 function LoginForm() {
   const [input, setInput] = useState({
-    userName: "",
+    email: "",
     password: "",
   });
+
+  const [error, setError] = useState("");
+
+  const auth = useAuth();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -16,7 +21,8 @@ function LoginForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //API call
+    const res = auth.logIn(input);
+    if (res != "SUCCESS") setError(res);
   };
 
   return (
@@ -25,10 +31,10 @@ function LoginForm() {
       <div>
         <input
           type="text"
-          name="userName"
-          placeholder="Username"
+          name="email"
+          placeholder="Email"
           minLength="6"
-          maxLength="12"
+          maxLength="24"
           onChange={(e) => handleInput(e)}
         />
       </div>
@@ -42,6 +48,7 @@ function LoginForm() {
           onChange={(e) => handleInput(e)}
         />
       </div>
+      <div className="error-message">{error}</div>
       <button type="submit" id="login-button">
         LOGIN
       </button>

@@ -80,3 +80,8 @@
 .auth-button:hover {
   color: #05a7c7;
 }
+
+.error-message {
+  font-size: .9rem;
+  color: var(--error-primary);
+}

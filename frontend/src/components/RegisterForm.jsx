@@ -7,6 +7,8 @@ function RegisterForm() {
     password: "",
   });
 
+  const [error, setError] = useState("");
+
   const handleInput = (e) => {
     const { name, value } = e.target;
     setInput((prev) => ({
@@ -18,7 +20,7 @@ function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const baseUrl = import.meta.env.VITE_BACKEND;
-   
+
     try {
       const response = await fetch(baseUrl + "/createaccount", {
         method: "POST",
@@ -27,8 +29,11 @@ function RegisterForm() {
         },
         body: JSON.stringify(input),
       });
+      const res = await response.text();
+      if (res != "SUCCESS") throw new Error(res);
+      else setError("");
     } catch (err) {
-      console.error(err);
+      setError(err.message);
     }
   };
 
@@ -41,7 +46,7 @@ function RegisterForm() {
           name="email"
           placeholder="Email"
           minLength="6"
-          maxLength="12"
+          maxLength="24"
           onChange={(e) => handleInput(e)}
         />
       </div>
@@ -65,6 +70,7 @@ function RegisterForm() {
           onChange={(e) => handleInput(e)}
         />
       </div>
+      <div className="error-message">{error}</div>
       <button type="submit" id="login-button">
         REGISTER
       </button>

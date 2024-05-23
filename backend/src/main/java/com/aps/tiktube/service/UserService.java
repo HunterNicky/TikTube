@@ -32,13 +32,13 @@ public class UserService {
         userAccess.close();
 
         if (emailAlreadyUsed || userNameAlreadyUsed)
-            message = "Email already used or User Name already used";
+            message = "Email already registered or username already registered";
         if (user.getUserName() == null || user.getUserName().isEmpty())
-            message = "Invalid User Name";
+            message = "Invalid username";
         if (user.getEmail() == null || user.getEmail().isEmpty())
-            message = "Invalid Email";
+            message = "Invalid email";
         if (user.getPassword() == null || user.getPassword().isEmpty())
-            message = "Invalid Password";
+            message = "Invalid password";
 
         if (!message.equals("")) {
             return message;
