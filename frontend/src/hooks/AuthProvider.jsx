@@ -1,12 +1,14 @@
 import { createContext, useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(undefined);
   const [token, setToken] = useState(
-    localStorage.getItem("tiktube") | "UNREGISTERED"
+    localStorage.getItem("tiktube") || "UNREGISTERED"
   );
+  const [authModal, setAuthModal] = useState(false);
 
   if (token == "UNREGISTERED" || localStorage.getItem("tiktube") === null)
     localStorage.setItem("tiktube", "UNREGISTERED");
@@ -43,7 +45,9 @@ function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, logIn, logOut }}>
+    <AuthContext.Provider
+      value={{ user, token, logIn, logOut, authModal, setAuthModal }}
+    >
       {children}
     </AuthContext.Provider>
   );

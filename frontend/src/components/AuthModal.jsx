@@ -2,13 +2,18 @@ import { useState } from "react";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import "./AuthModal.css";
+import { useAuth } from "../hooks/AuthProvider";
 
-function AuthModal({ setModal }) {
+function AuthModal() {
   const [loginScreen, setLoginScreen] = useState(true);
+  const { authModal, setAuthModal } = useAuth();
+
+  if (!authModal)
+    return (<></>);
 
   return (
     <>
-      <div id="login-overlay" onClick={() => setModal(false)}></div>
+      <div id="login-overlay" onClick={() => setAuthModal(false)}></div>
       <div id="login-form-container">
         {loginScreen ? <LoginForm /> : <RegisterForm />}
         <footer>
