@@ -11,7 +11,6 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.GridFSDownloadStream;
-import com.mongodb.client.gridfs.model.GridFSDownloadOptions;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 import com.mongodb.client.model.Filters;
@@ -341,16 +340,12 @@ public class Access<T extends Entity<T>> {
      * @return
      */
     public GridFsResource getMediaResource(String mediaid, String bucketName) {
-        Bson filter = Filters.eq(FILENAME, mediaid);
         try {
             GridFSBucket gridFSBucket = GridFSBuckets.create(this.db, bucketName);
-            GridFSFile gridFSFile = gridFSBucket.find(filter).first();
+            GridFSFile gridFSFile = findGridFSFileById(gridFSBucket, mediaid);
 
             if (gridFSFile != null) {
-                GridFSDownloadOptions options = new GridFSDownloadOptions()
-                        .revision(gridFSFile.getMetadata().get("_id", 0));
-
-                GridFSDownloadStream gridFSDownloadStream = gridFSBucket.openDownloadStream(mediaid, options);
+                GridFSDownloadStream gridFSDownloadStream = gridFSBucket.openDownloadStream(gridFSFile.getObjectId());
 
                 return new GridFsResource(gridFSFile, gridFSDownloadStream);
             } else {
