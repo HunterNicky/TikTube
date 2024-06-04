@@ -47,7 +47,7 @@ public class UserController {
         try {
             UserService userService = new UserService();
             String message = userService.login(user);
-            if (!message.contains("Login efetuado.")) {
+            if (!message.contains("Logged in.")) {
                 return ResponseEntity.badRequest()
                         .header(ACCESCONTROLALLOW)
                         .body(message);
