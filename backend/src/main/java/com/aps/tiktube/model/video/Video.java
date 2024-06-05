@@ -77,15 +77,15 @@ public class Video extends Entity<Video> {
     }
 
     @Override
-    protected Document toDocument() {
+    public Document toDocument() {
         Document doc = new Document();
 
-        doc.append("VideoName", this.videoName);
-        doc.append("Description", this.description);
-        doc.append("PublishDate", this.publishDate);
-        doc.append("VideoId", this.videoId);
-        doc.append("UserId", this.userId);
-        doc.append("ThumbnailId", this.thumbnailId);
+        doc.append("video_name", this.videoName);
+        doc.append("description", this.description);
+        doc.append("publish_date", this.publishDate.getTime());
+        doc.append("id", this.videoId);
+        doc.append("user_id", this.userId);
+        doc.append("thumbnail_id", this.thumbnailId);
 
         return doc;
     }

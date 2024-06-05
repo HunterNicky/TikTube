@@ -52,6 +52,40 @@ public class UserService {
         return "SUCCESS";
     }
 
+    public String getUser(String token) {
+        Access<Token> access = new Access<>(Token.class);
+        List<Token> tokens = access.where("TokenValue", token);
+        access.close();
+
+        if (tokens.isEmpty())
+            return "Token not found";
+        else {
+            Token tokenObj = tokens.get(0);
+            Access<User> userAccess = new Access<>(User.class);
+            User users = userAccess.getById(tokenObj.getUserId());
+            userAccess.close();
+            if (users == null)
+                return "User not found";
+            return users.toDocument().toJson();
+        }
+    }
+
+
+    /**
+     * Get a user by its id
+     * 
+     * @param userId
+     * @return User
+     */
+    public String getUserName(String userId) {
+        Access<User> access = new Access<>(User.class);
+        List<User> users = access.where("Id", userId);
+        access.close();
+        if (users.isEmpty())
+            return "User not found";
+        return users.get(0).getUserName();
+    }
+
     /**
      * Delete a user
      * 

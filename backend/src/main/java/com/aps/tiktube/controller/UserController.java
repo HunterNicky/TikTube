@@ -2,6 +2,7 @@ package com.aps.tiktube.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,9 +16,35 @@ import com.aps.tiktube.service.UserService;
 public class UserController {
     static final String ACCESCONTROLALLOW = "Access-Control-Allow-Origin";
 
-    @GetMapping("/getuser")
-    public String getUserString() {
-        return "test";
+    @GetMapping("/getuser/{token}")
+    public String getMethodName(@PathVariable("token") String token) {
+        try {
+            UserService userService = new UserService();
+            return userService.getUser(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "User not found.";
+        }
+    }
+
+    @GetMapping("/getusername/{id}")
+    public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
+        try {
+            String userName = new UserService().getUserName(id);
+            if (userName.isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .header(ACCESCONTROLALLOW)
+                        .body("User not found.");
+            }
+            return ResponseEntity.ok()
+                    .header(ACCESCONTROLALLOW)
+                    .body(userName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest()
+                    .header(ACCESCONTROLALLOW)
+                    .body("_ERROR_15");
+        }
     }
 
     @PostMapping("/createaccount")

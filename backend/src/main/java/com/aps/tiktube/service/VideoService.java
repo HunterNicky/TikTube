@@ -303,15 +303,7 @@ public class VideoService {
             return VIDEONOTFOUND;
         }
 
-        JSONObject videoInfo = new JSONObject();
-
-        videoInfo.put("title", video.getVideoName());
-        videoInfo.put("description", video.getDescripton());
-        videoInfo.put("publish_date", video.getPublishDate());
-        videoInfo.put("views", numOfViews(videoId));
-        videoInfo.put("likes", numOfLikes(videoId));
-
-        return videoInfo.toString();
+        return video.toDocument().toJson();
     }
 
     /**
@@ -342,7 +334,7 @@ public class VideoService {
      * Get all the videos
      * 
      * @return Videos
-     */     
+     */
     public String getAllVideos() {
         Access<Video> videoAccess = new Access<>(Video.class);
         List<Document> videos = videoAccess.getCollectionAsList(VIDEO);

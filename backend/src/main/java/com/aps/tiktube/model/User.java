@@ -84,15 +84,15 @@ public class User extends Entity<User> {
     }
 
     @Override
-    protected Document toDocument() {
+    public Document toDocument() {
         Document doc = new Document();
 
-        doc.append("UserName", this.userName);
-        doc.append("Email", this.email);
-        doc.append("BirthDate", this.birthDate);
-        doc.append("Password", this.password);
-        doc.append("ProfilePictureId", this.profilePictureId);
-        doc.append("IsAdmin", this.isAdmin);
+        doc.append("user_name", this.userName);
+        doc.append("email", this.email);
+        doc.append("birth_date", this.birthDate.getTime());
+        doc.append("id", this.getId());
+        doc.append("Profile_picture_id", this.profilePictureId);
+        doc.append("is_admin", this.isAdmin);
 
         return doc;
     }
