@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -341,22 +342,21 @@ public class VideoService {
      * Get all the videos
      * 
      * @return Videos
-     */
+     */     
     public String getAllVideos() {
         Access<Video> videoAccess = new Access<>(Video.class);
         List<Document> videos = videoAccess.getCollectionAsList(VIDEO);
         videoAccess.close();
 
-        JSONObject videosInfo = new JSONObject();
+        JSONArray videosInfo = new JSONArray();
 
         for (Document video : videos) {
             JSONObject videoInfo = new JSONObject();
-            videoInfo.put("Title", video.get("videoName"));
-            videoInfo.put("Description", video.get("description"));
-            videoInfo.put("Publish Date", video.get("publishDate"));
-            videoInfo.put("Number of Views", numOfViews(video.get(VIDEOID).toString()));
-            videoInfo.put("Number of Likes", numOfLikes(video.get(VIDEOID).toString()));
-            videosInfo.put(video.get(VIDEOID).toString(), videoInfo);
+            videoInfo.put("id", video.get(VIDEOID).toString());
+            videoInfo.put("title", video.get("VideoName"));
+            videoInfo.put("publish_date", video.get("PublishDate"));
+            videoInfo.put("views", numOfViews(video.get(VIDEOID).toString()));
+            videosInfo.put(videoInfo);
         }
 
         return videosInfo.toString();
