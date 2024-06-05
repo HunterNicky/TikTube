@@ -305,11 +305,11 @@ public class VideoService {
 
         JSONObject videoInfo = new JSONObject();
 
-        videoInfo.put("Title", video.getVideoName());
-        videoInfo.put("Description", video.getDescripton());
-        videoInfo.put("Publish Date", video.getPublishDate());
-        videoInfo.put("Number of Views", numOfViews(videoId));
-        videoInfo.put("Number of Likes", numOfLikes(videoId));
+        videoInfo.put("title", video.getVideoName());
+        videoInfo.put("description", video.getDescripton());
+        videoInfo.put("publish_date", video.getPublishDate());
+        videoInfo.put("views", numOfViews(videoId));
+        videoInfo.put("likes", numOfLikes(videoId));
 
         return videoInfo.toString();
     }

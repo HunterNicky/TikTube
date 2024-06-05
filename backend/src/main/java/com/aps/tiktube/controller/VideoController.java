@@ -141,6 +141,22 @@ public class VideoController {
         }
     }
 
+    @GetMapping("/getvideoinfo/{videoId}/{token}")
+    public ResponseEntity<Object> getVideoInfo(@PathVariable("videoId") String videoId,
+            @PathVariable("token") String token) {
+        if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
+            return ResponseEntity.status(401).body(INVALIDTOKEN);
+
+        TokenManager.updateTokenLastTimeUsed(token);
+
+        try {
+            VideoService videoService = new VideoService();
+            return ResponseEntity.ok(videoService.getVideoInfo(videoId));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error getting video info");
+        }
+    }
+
     @GetMapping("/getallvideos/{token}")
     public ResponseEntity<Object> getAllVideos(@PathVariable("token") String token) {
         try {
