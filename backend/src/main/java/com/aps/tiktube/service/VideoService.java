@@ -22,7 +22,7 @@ import com.aps.tiktube.security.TokenManager;
 public class VideoService {
 
     private static final String VIDEONOTFOUND = "Video not found";
-    private static final String VIDEOID = "VideoId";
+    private static final String VIDEOID = "video_id";
     private static final String VIDEO = "Video";
 
     /**
@@ -299,7 +299,7 @@ public class VideoService {
         Video video = videoAccess.getById(videoId);
         videoAccess.close();
 
-        if (video == null) {
+        if (!video.getExist()) {
             return VIDEONOTFOUND;
         }
 
@@ -345,8 +345,8 @@ public class VideoService {
         for (Document video : videos) {
             JSONObject videoInfo = new JSONObject();
             videoInfo.put("id", video.get(VIDEOID).toString());
-            videoInfo.put("title", video.get("VideoName"));
-            videoInfo.put("publish_date", video.get("PublishDate"));
+            videoInfo.put("title", video.get("video_name"));
+            videoInfo.put("publish_date", video.get("publish_date"));
             videoInfo.put("views", numOfViews(video.get(VIDEOID).toString()));
             videosInfo.put(videoInfo);
         }

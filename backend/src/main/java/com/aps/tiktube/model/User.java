@@ -89,9 +89,9 @@ public class User extends Entity<User> {
 
         doc.append("user_name", this.userName);
         doc.append("email", this.email);
-        doc.append("birth_date", this.birthDate.getTime());
-        doc.append("id", this.getId());
-        doc.append("Profile_picture_id", this.profilePictureId);
+        doc.append("birth_date", this.birthDate);
+        doc.append("profile_picture_id", this.profilePictureId);
+        doc.append("password", this.password);
         doc.append("is_admin", this.isAdmin);
 
         return doc;
@@ -101,15 +101,15 @@ public class User extends Entity<User> {
     protected void fromDocument(Document doc) {
         Object value;
 
-        value = doc.get("UserName");
+        value = doc.get("user_name");
         if (value != null)
             this.userName = value.toString();
 
-        value = doc.get("Email");
+        value = doc.get("email");
         if (value != null)
             this.email = value.toString();
 
-        value = doc.get("BirthDate");
+        value = doc.get("birth_date");
         if (value != null) {
             try {
                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
@@ -122,15 +122,15 @@ public class User extends Entity<User> {
             }
         }
 
-        value = doc.get("Password");
+        value = doc.get("password");
         if (value != null)
             this.password = value.toString();
 
-        value = doc.get("ProfilePictureId");
+        value = doc.get("profile_picture_id");
         if (value != null)
             this.profilePictureId = value.toString();
 
-        value = doc.get("IsAdmin");
+        value = doc.get("is_admin");
         if (value != null)
             this.isAdmin = Boolean.parseBoolean(value.toString());
     }

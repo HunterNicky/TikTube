@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.bson.Document;
 
 @Service
 public class UserService {
@@ -66,7 +67,10 @@ public class UserService {
             userAccess.close();
             if (users == null)
                 return "User not found";
-            return users.toDocument().toJson();
+            Document doc = users.toDocument();
+            doc.remove("password");
+            doc.append("id", users.getId());
+            return doc.toJson();
         }
     }
 
@@ -111,7 +115,7 @@ public class UserService {
 
         String encoded = DigestUtils.sha256Hex(user.getPassword());
         Access<User> access = new Access<>(User.class);
-        List<User> users = access.where(Arrays.asList("Email", "Password"),
+        List<User> users = access.where(Arrays.asList("email", "password"),
                                 Arrays.asList(user.getEmail(), encoded));
 
         if (!users.isEmpty()) {

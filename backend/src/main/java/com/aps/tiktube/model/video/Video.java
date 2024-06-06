@@ -82,8 +82,8 @@ public class Video extends Entity<Video> {
 
         doc.append("video_name", this.videoName);
         doc.append("description", this.description);
-        doc.append("publish_date", this.publishDate.getTime());
-        doc.append("id", this.videoId);
+        doc.append("publish_date", this.publishDate);
+        doc.append("video_id", this.videoId);
         doc.append("user_id", this.userId);
         doc.append("thumbnail_id", this.thumbnailId);
 
@@ -94,27 +94,27 @@ public class Video extends Entity<Video> {
     protected void fromDocument(Document doc) {
         Object value;
 
-        value = doc.get("VideoName");
+        value = doc.get("video_name");
         if (value != null)
             this.videoName = value.toString();
 
-        value = doc.get("Description");
+        value = doc.get("description");
         if (value != null)
             this.description = value.toString();
 
-        value = doc.get("VideoId");
+        value = doc.get("video_id");
         if (value != null)
             this.videoId = value.toString();
 
-        value = doc.get("UserId");
+        value = doc.get("user_id");
         if (value != null)
             this.userId = value.toString();
 
-        value = doc.get("ThumbnailId");
+        value = doc.get("thumbnail_id");
         if (value != null)
             this.thumbnailId = value.toString();
 
-        value = doc.get("PublishDate");
+        value = doc.get("publish_date");
         if (value != null) {
             try {
                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
