@@ -344,9 +344,11 @@ public class VideoService {
 
         for (Document video : videos) {
             JSONObject videoInfo = new JSONObject();
-            videoInfo.put("id", video.get(VIDEOID).toString());
+            videoInfo.put("id", video.get("_id").toString());
+            videoInfo.put(VIDEOID, video.get(VIDEOID).toString());
             videoInfo.put("title", video.get("video_name"));
-            videoInfo.put("publish_date", video.get("publish_date"));
+            videoInfo.put("publish_date", video.get("publish_date").toString());
+            videoInfo.put("user_id", video.get("user_id"));
             videoInfo.put("views", numOfViews(video.get(VIDEOID).toString()));
             videosInfo.put(videoInfo);
         }
