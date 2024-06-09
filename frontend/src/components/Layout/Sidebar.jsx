@@ -1,17 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/AuthProvider";
+import { useAuth } from "../../hooks/AuthProvider";
 import "./Sidebar.css";
 
 function Sidebar() {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  const verifyAuthRoute = (path) => {
-    if (auth.token === "UNREGISTERED") {
+  const verifyAuthRoute = (path) => { 
+    if (auth.token === "unregistered") {
       auth.setAuthModal(true);
       return;
     }
-    
     navigate(path);
   }
 
@@ -136,7 +135,7 @@ function Sidebar() {
                 </svg>
               }
               <span className="link-text">
-                {auth.user == undefined ? "Login" : auth.user}
+                {auth.user == undefined ? "Login" : auth.user["user_name"]}
               </span>
             </div>
           </li>

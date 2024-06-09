@@ -1,17 +1,23 @@
-import { createContext, useContext, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { createContext, useContext, useEffect, useState } from "react";
+import { getUserInfo } from "../utils/UserAPI";
 
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(undefined);
   const [token, setToken] = useState(
-    localStorage.getItem("tiktube") || "UNREGISTERED"
+    localStorage.getItem("tiktube") || "unregistered"
   );
   const [authModal, setAuthModal] = useState(false);
 
-  if (token == "UNREGISTERED" || localStorage.getItem("tiktube") === null)
-    localStorage.setItem("tiktube", "UNREGISTERED");
+  useEffect(() => {
+    const getToken = async () => {
+      if (token == "unregistered" || localStorage.getItem("tiktube") === null)
+        localStorage.setItem("tiktube", "unregistered");
+      else setUser(await getUserInfo(token));
+    };
+    getToken();
+  }, []);
 
   const logIn = async (data) => {
     const baseUrl = import.meta.env.VITE_BACKEND;
@@ -27,9 +33,9 @@ function AuthProvider({ children }) {
       const res = await response.text();
       if (res == "Already have a user logged in") throw new Error(res);
       else {
-        setUser(data.email);
-        setToken(res.slice(17));
-        localStorage.setItem("tiktube", res.slice(17));
+        setToken(res);
+        localStorage.setItem("tiktube", res);
+        setUser(await getUserInfo(res));
       }
       return "SUCCESS";
     } catch (err) {

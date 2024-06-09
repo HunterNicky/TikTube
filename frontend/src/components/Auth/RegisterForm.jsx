@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function RegisterForm() {
   const [input, setInput] = useState({
@@ -31,7 +32,10 @@ function RegisterForm() {
       });
       const res = await response.text();
       if (res != "SUCCESS") throw new Error(res);
-      else setError("");
+      else {
+        setError("");
+        toast("Registered!");
+      }
     } catch (err) {
       setError(err.message);
     }

@@ -1,29 +1,44 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import videos from "../assets/videos.json";
+import { getVideoInfo } from "../utils/VideoAPI";
+import { useAuth } from "../hooks/AuthProvider.jsx";
 import "./VideoPlayer.css";
 
 function VideoPlayer() {
-  const [videoObj, setVideoObj] = useState({});
+  const [videoInfo, setVideoInfo] = useState({});
+  const [video, setVideo] = useState(null);
   const { id } = useParams();
+  const { token } = useAuth();
 
   useEffect(() => {
-    const obj = videos.find((obj) => obj.id == id);
-    setVideoObj(obj);
-    if (obj == undefined)
-      throw new Response("Not Found", { statusText: "404 Not Found" });
-  }, [id]);
+    const getVideo = async () => {
+      const baseUrl = import.meta.env.VITE_BACKEND;
+      try {
+        const res = await getVideoInfo(token, id);
+        if (res == "Video not found")
+          throw new Response("Not Found", { statusText: "404 Not Found" });
+        else {
+          setVideoInfo(res);
+          setVideo(baseUrl + "/getmedia/" + id + "/" + token + "/Video");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getVideo();
+  }, []);
 
   return (
     <div className="player-container">
       <video controls muted>
-        {videoObj.video && <source src={videoObj.video} type="video/webm" />}
+        {video && <source src={video} type="video/mp4" />}
         Your browser does not support the video tag.
       </video>
       <div className="video-info-player">
         <div>
-          <p className="player-title">{videoObj.title}</p>
-          <p>{videoObj.author}</p>
+          <p className="player-title">{videoInfo.video_name}</p>
+          <p>Author</p>
           <p>84M views</p>
         </div>
         <div className="like-container">

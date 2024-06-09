@@ -15,13 +15,11 @@
   width: 90%;
 }
 
-#upload-container {
-  align-items: center;
-  border-radius: .5rem;
-  border: #3d3d3d dashed 2px;
-  display: flex;
-  flex-direction: column;
-  padding: 4rem;
+#video-input {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 #upload-container p {
@@ -65,8 +63,25 @@
   text-align: justify;
 }
 
-#video-thumbnail {
+#thumbnail-input-container {
+  position: relative;
+}
+
+#thumbnail-input-container:hover {
+  opacity: .9;
+}
+
+#video-thumbnail-input {
   margin-top: .5rem;
+}
+
+#video-thumbnail-input-hidden {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 
 #upload-button {
@@ -87,5 +102,48 @@
   background-color: #115ca7;
 }
 
+table {
+  border: dashed 2px #3d3d3d;
+  border-radius: 2px;
+  background-color: #212121;
+  margin-top: .2rem;
+  width: 100%;
+}
 
+td, th {
+  text-align: left;
+  padding: 1rem;
+}
 
+th {
+  border-bottom: 2px solid #3d3d3d;
+}
+
+td:nth-child(1) {
+  width: 30%;
+}
+
+td:nth-child(2) {
+  width: 50%;
+}
+
+.thumbnail-preview {
+  max-width: 80%;
+}
+
+#upload-progress-container {
+  height: 2rem;
+  width: 100%;
+  border: 1px solid var(--border-primary);
+  border-radius: 2px;
+  margin-top: 1rem;
+  background-color: transparent;
+}
+
+#upload-progress {
+  text-align: center;
+  height: 100%;
+  border-radius: 2px;
+  background-color: #0f4d8a;
+  transition: width 0.5s ease-out;
+}

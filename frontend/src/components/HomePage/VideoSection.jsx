@@ -2,17 +2,26 @@ import { useEffect, useState } from "react";
 import VideoCard from "./VideoCard.jsx";
 import LoadingCard from "./LoadingCard.jsx";
 import "./VideoSection.css";
+import { getAllVideos } from "../../utils/VideoAPI.js";
+import { useAuth } from "../../hooks/AuthProvider.jsx";
 
-function VideoSection({ data, categoryTitle }) {
+function VideoSection({ categoryTitle }) {
+  const [videos, setVideos] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const { token } = useAuth();
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
+    const getData = async () => {
+      try {
+        setVideos(await getAllVideos(token));
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-    return () => clearTimeout(timeout);
-  }, [isLoading]);
+    getData();
+  }, []);
 
   return (
     <section className="video-category">
@@ -22,14 +31,12 @@ function VideoSection({ data, categoryTitle }) {
           ? Array(5)
               .fill(0)
               .map((_, i) => <LoadingCard key={i} />)
-          : data.map((obj) => (
+          : videos.map((obj) => (
               <VideoCard
                 key={obj.id}
                 id={obj.id}
                 title={obj.title}
-                author={obj.author}
-                views={obj.view_count}
-                thumbnail={obj.thumbnail}
+                views={obj.views}
               />
             ))}
       </div>
