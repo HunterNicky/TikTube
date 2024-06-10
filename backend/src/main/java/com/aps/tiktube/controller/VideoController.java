@@ -172,6 +172,52 @@ public class VideoController {
         }
     }
 
+    @GetMapping("/getalltrendingvideos/{token}")
+    public ResponseEntity<Object> getAllTrendingVideos(@PathVariable("token") String token) {
+        if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
+            return ResponseEntity.status(401).body(INVALIDTOKEN);
+
+        TokenManager.updateTokenLastTimeUsed(token);
+
+        try {
+            VideoService videoService = new VideoService();
+            return ResponseEntity.ok(videoService.getAllTrendingVideos());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error getting trending videos");
+        }
+    }
+
+    @GetMapping("/getallvideosbyuser/{userId}/{token}")
+    public ResponseEntity<Object> getAllVideosByUser(@PathVariable("userId") String userId,
+            @PathVariable("token") String token) {
+        if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
+            return ResponseEntity.status(401).body(INVALIDTOKEN);
+
+        TokenManager.updateTokenLastTimeUsed(token);
+
+        try {
+            VideoService videoService = new VideoService();
+            return ResponseEntity.ok(videoService.getUserVideos(userId));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error getting videos by user");
+        }
+    }
+
+    @GetMapping("/getallnewvideos/{token}")
+    public ResponseEntity<Object> getAllNewVideos(@PathVariable("token") String token) {
+        if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
+            return ResponseEntity.status(401).body(INVALIDTOKEN);
+
+        TokenManager.updateTokenLastTimeUsed(token);
+
+        try {
+            VideoService videoService = new VideoService();
+            return ResponseEntity.ok(videoService.getAllNewVideos());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error getting new videos");
+        }
+    }
+
     @GetMapping("/getcomments/{videoId}/{token}")
     public ResponseEntity<Object> getComments(@PathVariable("videoId") String videoId,
             @PathVariable("token") String token) {

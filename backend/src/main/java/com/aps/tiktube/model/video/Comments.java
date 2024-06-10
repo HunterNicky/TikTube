@@ -60,10 +60,10 @@ public class Comments extends Entity<Comments> {
     protected Document toDocument() {
         Document doc = new Document();
 
-        doc.append("Comment", comment);
-        doc.append("UserId", userId);
-        doc.append("VideoId", videoId);
-        doc.append("Data", data);
+        doc.append("comment", comment);
+        doc.append("user_id", userId);
+        doc.append("video_id", videoId);
+        doc.append("data", data);
         
         return doc;
     }
@@ -72,22 +72,22 @@ public class Comments extends Entity<Comments> {
     protected void fromDocument(Document doc) {
         Object value;
 
-        value = doc.get("Comment");
+        value = doc.get("comment");
         if (value instanceof String) {
             this.comment = (String) value;
         }
 
-        value = doc.get("UserId");
+        value = doc.get("user_id");
         if (value instanceof String) {
             this.userId = (String) value;
         }
 
-        value = doc.get("VideoId");
+        value = doc.get("video_id");
         if (value instanceof String) {
             this.videoId = (String) value;
         }
 
-        value = doc.get("Data");
+        value = doc.get("data");
         if (value != null) {
             try {
                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);

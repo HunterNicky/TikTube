@@ -50,7 +50,7 @@ public class VideoService {
         video.setThumbnailId(null);
         video.save();
 
-        return "Video uploaded";
+        return videoId;
     }
 
     /**
@@ -314,7 +314,7 @@ public class VideoService {
      */
     public String getComments(String videoId) {
         Access<Comments> commentsAccess = new Access<>(Comments.class);
-        List<Comments> comments = commentsAccess.where(Arrays.asList(VIDEOID), Arrays.asList(videoId));
+        List<Comments> comments = commentsAccess.where(VIDEOID, videoId);
         commentsAccess.close();
 
         JSONObject commentsInfo = new JSONObject();
@@ -351,6 +351,108 @@ public class VideoService {
             videoInfo.put("user_id", video.get("user_id"));
             videoInfo.put("views", numOfViews(video.get(VIDEOID).toString()));
             videosInfo.put(videoInfo);
+        }
+
+        return videosInfo.toString();
+    }
+
+    /**
+     * Sort the documents by a label
+     * 
+     * @param documents
+     * @param label
+     * @return Sorted documents
+     */
+    private List<Document> sortDocumentByLabel(List<Document> documents, String label) {
+        documents.sort((Document d1, Document d2) -> {
+            return d1.get(label).toString().compareTo(d2.get(label).toString());
+        });
+        return documents;
+    }
+
+    /**
+     * Get all the trending videos
+     * 
+     * @return Trending videos
+     */
+    public String getAllTrendingVideos() {
+        Access<Video> videoAccess = new Access<>(Video.class);
+        List<Document> videos = videoAccess.getCollectionAsList(VIDEO);
+
+        for (Document video : videos) {
+            video.put("views", numOfViews(video.get(VIDEOID).toString()));
+        }
+
+        List<Document> orderDocuments = sortDocumentByLabel(videos, "views");
+        videoAccess.close();
+
+        JSONArray videosInfo = new JSONArray();
+
+        for (Document video : orderDocuments) {
+            JSONObject videoInfo = new JSONObject();
+            videoInfo.put("id", video.get("_id").toString());
+            videoInfo.put(VIDEOID, video.get(VIDEOID).toString());
+            videoInfo.put("title", video.get("video_name"));
+            videoInfo.put("publish_date", video.get("publish_date").toString());
+            videoInfo.put("user_id", video.get("user_id"));
+            videoInfo.put("views", video.get("views").toString());
+            videosInfo.put(videoInfo);
+        }
+
+        return videosInfo.toString();
+    }
+
+    /**
+     * Get all the new videos
+     * 
+     * @return Videos
+     */
+    public String getAllNewVideos() {
+        Access<Video> videoAccess = new Access<>(Video.class);
+        List<Document> videos = videoAccess.getCollectionAsList(VIDEO);
+
+        for (Document video : videos) {
+            video.put("publish_date", video.get("publish_date").toString());
+        }
+
+        List<Document> orderDocuments = sortDocumentByLabel(videos, "publish_date");
+        videoAccess.close();
+
+        JSONArray videosInfo = new JSONArray();
+
+        for (Document video : orderDocuments) {
+            JSONObject videoInfo = new JSONObject();
+            videoInfo.put("id", video.get("_id").toString());
+            videoInfo.put(VIDEOID, video.get(VIDEOID).toString());
+            videoInfo.put("title", video.get("video_name"));
+            videoInfo.put("publish_date", video.get("publish_date").toString());
+            videoInfo.put("user_id", video.get("user_id"));
+            videoInfo.put("views", numOfViews(video.get(VIDEOID).toString()));
+            videosInfo.put(videoInfo);
+        }
+
+        return videosInfo.toString();
+    }
+
+    /**
+     * Get the videos of a user
+     * 
+     * @param token
+     * @return Videos
+     */
+    public String getUserVideos(String userId) {
+        Access<User> userAccess = new Access<>(User.class);
+        User user = userAccess.getById(userId);
+        userAccess.close();
+
+        Access<Video> videoAccess = new Access<>(Video.class);
+        List<Video> videos = videoAccess.where("user_id", user.getId());
+        videoAccess.close();
+
+        JSONArray videosInfo = new JSONArray();
+
+        for (Video video : videos) {
+            videosInfo.put(video.toDocument());
         }
 
         return videosInfo.toString();
