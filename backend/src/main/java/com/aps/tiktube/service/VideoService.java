@@ -303,7 +303,11 @@ public class VideoService {
             return VIDEONOTFOUND;
         }
 
-        return video.toDocument().toJson();
+        Document videoInfo = video.toDocument();
+        videoInfo.put("views", numOfViews(videoId));
+        videoInfo.put("likes", numOfLikes(videoId));
+
+        return videoInfo.toJson().toString();
     }
 
     /**
