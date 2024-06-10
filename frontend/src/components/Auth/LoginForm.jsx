@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/AuthProvider";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function LoginForm() {
   const [input, setInput] = useState({
@@ -26,7 +26,7 @@ function LoginForm() {
     if (res != "SUCCESS") setError(res);
     else {
       auth.setAuthModal(false);
-      toast("Logged In!");
+      toast("Logged in!");
     }
   };
 

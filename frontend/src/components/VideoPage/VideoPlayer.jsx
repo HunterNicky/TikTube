@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getVideoInfo } from "../utils/VideoAPI";
-import { useAuth } from "../hooks/AuthProvider.jsx";
+import { getVideoInfo } from "../../utils/VideoAPI.js";
+import { useAuth } from "../../hooks/AuthProvider.jsx";
 import "./VideoPlayer.css";
+import CommentSection from "./CommentSection.jsx";
 
 function VideoPlayer() {
   const [videoInfo, setVideoInfo] = useState({});
@@ -82,6 +83,7 @@ function VideoPlayer() {
           </span>
         </div>
       </div>
+      <CommentSection id={id} />
     </div>
   );
 }

@@ -1,0 +1,46 @@
+#comments-container {
+  width: 85vw;
+  color: var(--text-primary);
+}
+
+#comment-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+}
+
+#video-comment {
+  background: none;
+  border: none;
+  resize: none;
+  color: var(--text-primary);
+  border-bottom: 2px  #302f2f solid;
+  line-height: .8rem;
+  overflow: hidden;
+  font-size: 1rem;
+  text-align: justify;
+  transition: border ease 0.2s;
+}
+
+#video-comment:focus {
+  outline: none;
+  border-bottom: 2px var(--text-secondary)solid;
+}
+
+#submit-comment {
+  margin: .7rem 0;
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  background-color: #212121;
+  border-radius: 1rem;
+  padding: .5rem .8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color ease 0.15s;
+}
+
+#submit-comment:hover {
+  background-color: #353434;
+}

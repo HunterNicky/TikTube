@@ -8,7 +8,7 @@ import HomePage from "./components/HomePage/HomePage.jsx";
 import ProtectedRoute from "./components/Auth/ProtectedRoute.jsx";
 import FavoritesPage from "./components/FavoritesPage.jsx";
 import UploadPage from "./components/Upload/UploadPage.jsx";
-import VideoPlayer from "./components/VideoPlayer.jsx";
+import VideoPlayer from "./components/VideoPage/VideoPlayer.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import AuthModal from "./components/Auth/AuthModal.jsx";
 import AuthProvider from "./hooks/AuthProvider.jsx";
