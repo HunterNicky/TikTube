@@ -33,8 +33,8 @@ public class Like extends Entity<Like> {
     protected Document toDocument() {
         Document doc = new Document();
 
-        doc.append("VideoId", videoId);
-        doc.append("UserId", userId);
+        doc.append("video_id", videoId);
+        doc.append("user_id", userId);
 
         return doc;
     }
@@ -43,12 +43,12 @@ public class Like extends Entity<Like> {
     protected void fromDocument(Document doc) {
         Object value;
 
-        value = doc.get("VideoId");
+        value = doc.get("video_id");
         if (value instanceof String) {
             this.videoId = (String) value;
         }
 
-        value = doc.get("UserId");
+        value = doc.get("user_id");
         if (value instanceof String) {
             this.userId = (String) value;
         }
