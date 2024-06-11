@@ -20,7 +20,7 @@ function VideoPlayer() {
           throw new Response("Not Found", { statusText: "404 Not Found" });
         else {
           setVideoInfo(res);
-          setVideo(baseUrl + "/getmedia/" + id + "/" + token + "/Video");
+          setVideo(baseUrl + "/getmedia/" + res.video_id + "/" + token + "/Video");
         }
       } catch (err) {
         console.log(err);
@@ -29,10 +29,14 @@ function VideoPlayer() {
 
     getVideo();
   }, []);
+  
+  async function increaseViewCount() {
+
+  }
 
   return (
     <div className="player-container">
-      <video controls muted>
+      <video controls muted onPlay={increaseViewCount}>
         {video && <source src={video} type="video/mp4" />}
         Your browser does not support the video tag.
       </video>
@@ -83,6 +87,10 @@ function VideoPlayer() {
           </span>
         </div>
       </div>
+      <div id="description-container">
+          <span>{}</span>
+          <span>{videoInfo.description}</span>
+        </div>
       <CommentSection id={id} />
     </div>
   );

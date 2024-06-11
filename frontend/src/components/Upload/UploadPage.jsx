@@ -1,10 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/AuthProvider";
+import { zipFile } from "../../utils/Utils";
 import ThumbnailUpload from "./ThumbnailUpload";
 import VideoUpload from "./VideoUpload";
 import "./UploadPage.css";
-import { toast } from "react-toastify";
 
 function UploadPage() {
   const [formData, setFormData] = useState({
@@ -32,9 +33,13 @@ function UploadPage() {
 
     const fd = new FormData();
     fd.append("token", token);
-    fd.append("file", video);
+    fd.append("file", await zipFile(video));
     fd.append("title", formData.title);
     fd.append("description", formData.description);
+
+    const fdT = new FormData();
+    fdT.append("token", token);
+    fdT.append("file", await zipFile(thumbnail));
 
     try {
       const res = await axios.post(baseUrl + "/uploadvideo", fd, {
@@ -43,6 +48,9 @@ function UploadPage() {
           console.log(progressE.progress * 100);
         },
       });
+      setUploadPercent(99);
+      fdT.append("videoId", res.data);
+      const resT = await axios.post(baseUrl + "/addthumbnail", fdT);
       setUploadPercent(100);
       toast("Uploaded video successfully!");
     } catch (err) {
