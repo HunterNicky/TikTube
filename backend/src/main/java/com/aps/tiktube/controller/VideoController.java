@@ -47,11 +47,11 @@ public class VideoController {
     @PostMapping("/addthumbnail")
     public ResponseEntity<Object> addThumbnail(@RequestParam("file") MultipartFile file,
             @RequestParam("token") String token,
-            @RequestParam("videoId") String videoId, @RequestParam("id") String id ){
+            @RequestParam("videoId") String videoId){
         if (!TokenManager.verify(token))
             return ResponseEntity.status(401).body(INVALIDTOKEN);
 
-        if (Boolean.FALSE.equals(TokenManager.verifyTokenAccess(token, TokenManager.getUser(token).getId(), VIDEO))) {
+        if (Boolean.FALSE.equals(TokenManager.verifyTokenAccess(token, videoId, VIDEO))) {
             return ResponseEntity.status(401).body(UNAUTHORIZED);
         }
 

@@ -115,6 +115,8 @@ public class TokenManager {
                     Access<com.aps.tiktube.model.video.Video> videoAccess = new Access<>(
                             com.aps.tiktube.model.video.Video.class);
                     userId = videoAccess.getById(id).getUserId();
+                    if (userId == null)
+                        userId = videoAccess.where("video_id", id).get(0).getUserId();
                     videoAccess.close();
                     break;
                 case "User":
