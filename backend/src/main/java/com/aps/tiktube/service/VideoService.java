@@ -321,14 +321,17 @@ public class VideoService {
         List<Comments> comments = commentsAccess.where(VIDEOID, videoId);
         commentsAccess.close();
 
-        JSONObject commentsInfo = new JSONObject();
+        JSONArray commentsInfo = new JSONArray();
 
+        int i  = 0;
         for (Comments comment : comments) {
             JSONObject commentInfo = new JSONObject();
             commentInfo.put("User", comment.getUserId());
             commentInfo.put("Comment", comment.getComment());
             commentInfo.put("Date", comment.getData());
-            commentsInfo.put(comment.getId(), commentInfo);
+            commentInfo.put("id", comment.getId());
+            commentsInfo.put(i, commentInfo);
+            i++;
         }
 
         return commentsInfo.toString();
