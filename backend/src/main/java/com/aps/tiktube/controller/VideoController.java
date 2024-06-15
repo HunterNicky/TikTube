@@ -141,6 +141,27 @@ public class VideoController {
         }
     }
 
+    @GetMapping("/getthumbnail/{thumbnail}/{token}/{bucketName}")
+    public ResponseEntity<Object> getThumbnail(@PathVariable("thumbnail") String thumbnail,
+            @PathVariable("token") String token,
+            @PathVariable("bucketName") String bucketName) {
+        if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
+            return ResponseEntity.status(401).body(INVALIDTOKEN);
+
+        TokenManager.updateTokenLastTimeUsed(token);
+
+        try {
+            Access<Video> videoAccess = new Access<>(Video.class);
+            Object object = videoAccess.getMediaResource(thumbnail, bucketName);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.valueOf("image/jpeg"))
+                    .body(object == null ? "Error getting thumbnail" : object);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error getting thumbnail");
+        }
+    }
+    
+
     @GetMapping("/getvideoinfo/{videoId}/{token}")
     public ResponseEntity<Object> getVideoInfo(@PathVariable("videoId") String videoId,
             @PathVariable("token") String token) {
