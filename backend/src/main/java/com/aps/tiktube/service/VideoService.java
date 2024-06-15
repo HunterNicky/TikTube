@@ -50,7 +50,11 @@ public class VideoService {
         video.setThumbnailId(null);
         video.save();
 
-        return videoId;
+        JSONObject response = new JSONObject();
+        response.put(VIDEOID, videoId);
+        response.put("id", video.getId());
+
+        return response.toString();
     }
 
     /**
@@ -357,6 +361,9 @@ public class VideoService {
             videoInfo.put("publish_date", video.get("publish_date").toString());
             videoInfo.put("user_id", video.get("user_id"));
             videoInfo.put("views", numOfViews(video.get(VIDEOID).toString()));
+            if (video.get("thumbnail_id") != null) {
+                videoInfo.put("thumbnail_id", video.get("thumbnail_id").toString());
+            }
             videosInfo.put(videoInfo);
         }
 
@@ -403,6 +410,9 @@ public class VideoService {
             videoInfo.put("publish_date", video.get("publish_date").toString());
             videoInfo.put("user_id", video.get("user_id"));
             videoInfo.put("views", video.get("views").toString());
+            if (video.get("thumbnail_id") != null) {
+                videoInfo.put("thumbnail_id", video.get("thumbnail_id").toString());
+            }
             videosInfo.put(videoInfo);
         }
 
@@ -435,6 +445,9 @@ public class VideoService {
             videoInfo.put("publish_date", video.get("publish_date").toString());
             videoInfo.put("user_id", video.get("user_id"));
             videoInfo.put("views", numOfViews(video.get(VIDEOID).toString()));
+            if (video.get("thumbnail_id") != null) {
+                videoInfo.put("thumbnail_id", video.get("thumbnail_id").toString());
+            }
             videosInfo.put(videoInfo);
         }
 
