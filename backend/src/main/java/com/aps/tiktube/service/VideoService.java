@@ -1,6 +1,9 @@
 package com.aps.tiktube.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -311,8 +314,9 @@ public class VideoService {
         videoInfo.put("views", numOfViews(videoId));
         videoInfo.put("likes", numOfLikes(videoId));
         videoInfo.put("username", getUsername(video.getUserId()));
+        JSONObject videoJson = new JSONObject(videoInfo);
 
-        return videoInfo.toJson().toString();
+        return videoJson.toString();
     }
 
     /**
@@ -350,24 +354,18 @@ public class VideoService {
      */
     public String getAllVideos() {
         Access<Video> videoAccess = new Access<>(Video.class);
-        List<Document> videos = videoAccess.getCollectionAsList(VIDEO);
+        List<Video> videos = videoAccess.getCollectionAsListEnty(VIDEO);
         videoAccess.close();
 
         JSONArray videosInfo = new JSONArray();
 
-        for (Document video : videos) {
-            JSONObject videoInfo = new JSONObject();
-            videoInfo.put("id", video.get("_id").toString());
-            videoInfo.put(VIDEOID, video.get(VIDEOID).toString());
-            videoInfo.put("title", video.get("video_name"));
-            videoInfo.put("publish_date", video.get("publish_date").toString());
-            videoInfo.put("user_id", video.get("user_id"));
-            videoInfo.put("views", numOfViews(video.get(VIDEOID).toString()));
-            if (video.get("thumbnail_id") != null) {
-                videoInfo.put("thumbnail_id", video.get("thumbnail_id").toString());
-            }
-            videoInfo.put("username", getUsername(video.get("user_id").toString()));
-            videosInfo.put(videoInfo);
+        for (Video video : videos) {
+            Document videoDocument = video.toDocument();
+            videoDocument.put("views", numOfViews(video.getVideoId()));
+            videoDocument.put("likes", numOfLikes(video.getVideoId()));
+            videoDocument.put("username", getUsername(video.getUserId()));
+            videoDocument.put("id", video.getId());
+            videosInfo.put(videoDocument);
         }
 
         return videosInfo.toString();
@@ -380,11 +378,25 @@ public class VideoService {
      * @param label
      * @return Sorted documents
      */
-    private List<Document> sortDocumentByLabel(List<Document> documents, String label) {
-        documents.sort((Document d1, Document d2) -> {
-            return d1.get(label).toString().compareTo(d2.get(label).toString());
-        });
-        return documents;
+    private static List<Document> sortDocumentByLabel(List<Document> documentos, String label) {
+        Comparator<Document> comparator = (d1, d2) -> {
+            Object valor1 = d1.get(label);
+            Object valor2 = d2.get(label);
+
+            if (valor1 instanceof Integer && valor2 instanceof Integer) {
+                return Integer.compare((Integer) valor1, (Integer) valor2);
+            } else if (valor1 instanceof String && valor2 instanceof String) {
+                return ((String) valor1).compareTo((String) valor2);
+            } else if (valor1 instanceof Date && valor2 instanceof Date) {
+                return ((Date) valor1).compareTo((Date) valor2);
+            } else {
+                throw new UnsupportedOperationException("Error" + valor1.getClass());
+            }
+        };
+
+        Collections.sort(documentos, comparator);
+
+        return documentos;
     }
 
     /**
@@ -394,31 +406,24 @@ public class VideoService {
      */
     public String getAllTrendingVideos() {
         Access<Video> videoAccess = new Access<>(Video.class);
-        List<Document> videos = videoAccess.getCollectionAsList(VIDEO);
+        List<Video> videos = videoAccess.getCollectionAsListEnty(VIDEO);
+        List<Document> documentsList = new ArrayList<>();
 
-        for (Document video : videos) {
-            video.put("views", numOfViews(video.get(VIDEOID).toString()));
+        for (Video video : videos) {
+            Document videoDocument = video.toDocument();
+            videoDocument.put("views", numOfViews(video.getVideoId()));
+            videoDocument.put("likes", numOfLikes(video.getVideoId()));
+            videoDocument.put("id", video.getId());
+            videoDocument.put("username", getUsername(video.getUserId()));
+            documentsList.add(videoDocument);
         }
 
-        List<Document> orderDocuments = sortDocumentByLabel(videos, "views");
+        List<Document> orderDocuments = sortDocumentByLabel(documentsList, "views");
         videoAccess.close();
 
         JSONArray videosInfo = new JSONArray();
 
-        for (Document video : orderDocuments) {
-            JSONObject videoInfo = new JSONObject();
-            videoInfo.put("id", video.get("_id").toString());
-            videoInfo.put(VIDEOID, video.get(VIDEOID).toString());
-            videoInfo.put("title", video.get("video_name"));
-            videoInfo.put("publish_date", video.get("publish_date").toString());
-            videoInfo.put("user_id", video.get("user_id"));
-            videoInfo.put("views", video.get("views").toString());
-            if (video.get("thumbnail_id") != null) {
-                videoInfo.put("thumbnail_id", video.get("thumbnail_id").toString());
-            }
-            videoInfo.put("username", getUsername(video.get("user_id").toString()));
-            videosInfo.put(videoInfo);
-        }
+        orderDocuments.forEach(videosInfo::put);
 
         return videosInfo.toString();
     }
@@ -430,31 +435,24 @@ public class VideoService {
      */
     public String getAllNewVideos() {
         Access<Video> videoAccess = new Access<>(Video.class);
-        List<Document> videos = videoAccess.getCollectionAsList(VIDEO);
+        List<Video> videos = videoAccess.getCollectionAsListEnty(VIDEO);
+        List<Document> documentsList = new ArrayList<>();
 
-        for (Document video : videos) {
-            video.put("publish_date", video.get("publish_date").toString());
+        for (Video video : videos) {
+            Document videoDocument = video.toDocument();
+            videoDocument.put("id", video.getId());
+            videoDocument.put("views", numOfViews(video.getVideoId()));
+            videoDocument.put("likes", numOfLikes(video.getVideoId()));
+            videoDocument.put("username", getUsername(video.getUserId()));
+            documentsList.add(videoDocument);
         }
 
-        List<Document> orderDocuments = sortDocumentByLabel(videos, "publish_date");
+        List<Document> orderDocuments = sortDocumentByLabel(documentsList, "publish_date");
         videoAccess.close();
 
         JSONArray videosInfo = new JSONArray();
 
-        for (Document video : orderDocuments) {
-            JSONObject videoInfo = new JSONObject();
-            videoInfo.put("id", video.get("_id").toString());
-            videoInfo.put(VIDEOID, video.get(VIDEOID).toString());
-            videoInfo.put("title", video.get("video_name"));
-            videoInfo.put("publish_date", video.get("publish_date").toString());
-            videoInfo.put("user_id", video.get("user_id"));
-            videoInfo.put("views", numOfViews(video.get(VIDEOID).toString()));
-            if (video.get("thumbnail_id") != null) {
-                videoInfo.put("thumbnail_id", video.get("thumbnail_id").toString());
-            }
-            videoInfo.put("username", getUsername(video.get("user_id").toString()));
-            videosInfo.put(videoInfo);
-        }
+        orderDocuments.forEach(videosInfo::put);
 
         return videosInfo.toString();
     }

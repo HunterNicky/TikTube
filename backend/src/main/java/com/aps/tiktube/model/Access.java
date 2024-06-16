@@ -141,6 +141,25 @@ public class Access<T extends Entity<T>> {
             return Collections.emptyList();
         }
     }
+    
+    public List<T> getCollectionAsListEnty(String collectionName) {
+        try {
+            MongoCollection<Document> newCollection = this.db.getCollection(collectionName);
+            FindIterable<Document> it = newCollection.find();
+            ArrayList<T> list = new ArrayList<>();
+            MongoCursor<Document> cursor = it.cursor();
+            while (cursor.hasNext()) {
+                T obj = EntityFactory.newEntity(type);
+                obj.setFromDocument(cursor.next());
+                obj.setExist(true);
+                list.add(obj);
+            }
+            cursor.close();
+            return list;
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
 
     public T first(String field, Object value) {
         Document filter = new Document();

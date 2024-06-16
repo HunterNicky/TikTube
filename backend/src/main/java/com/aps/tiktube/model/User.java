@@ -89,7 +89,11 @@ public class User extends Entity<User> {
 
         doc.append("user_name", this.userName);
         doc.append("email", this.email);
-        doc.append("birth_date", this.birthDate);
+        if (this.birthDate != null) {
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+            outputFormat.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+            doc.append("birth_date", outputFormat.format(this.birthDate));
+        }
         doc.append("profile_picture_id", this.profilePictureId);
         doc.append("password", this.password);
         doc.append("is_admin", this.isAdmin);

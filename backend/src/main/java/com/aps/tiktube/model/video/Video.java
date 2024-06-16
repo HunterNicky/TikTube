@@ -82,7 +82,11 @@ public class Video extends Entity<Video> {
 
         doc.append("video_name", this.videoName);
         doc.append("description", this.description);
-        doc.append("publish_date", this.publishDate);
+        if (this.publishDate != null) {
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+            outputFormat.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+            doc.append("publish_date", outputFormat.format(this.publishDate));
+        }
         doc.append("video_id", this.videoId);
         doc.append("user_id", this.userId);
         doc.append("thumbnail_id", this.thumbnailId);

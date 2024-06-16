@@ -63,7 +63,11 @@ public class Comments extends Entity<Comments> {
         doc.append("comment", comment);
         doc.append("user_id", userId);
         doc.append("video_id", videoId);
-        doc.append("data", data);
+        if (data != null) {
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+            outputFormat.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+            doc.append("data", outputFormat.format(data));
+        }
         
         return doc;
     }
