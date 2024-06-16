@@ -20,6 +20,7 @@ import "./index.css";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import UserVideosPage from "./components/UserVideosPage.jsx";
+import Search from "./components/Search.jsx";
 dayjs.extend(relativeTime);
 
 function Navigation() {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "/watch/:id",
         element: <VideoPlayer />,
+      },
+      {
+        path: "/search",
+        element: <Search />
       },
       {
         element: <ProtectedRoute />,
