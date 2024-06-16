@@ -65,7 +65,7 @@ function CommentSection({ id }) {
       </form>
       <div>
         {comments?.map((obj) => (
-          <Comment key={obj.id} comment={obj.comment} date={obj.Date} username={obj.UserName}/>
+          <Comment key={obj.id} comment={obj.comment} date={obj.data} username={obj.UserName}/>
         ))}
       </div>
     </div>
