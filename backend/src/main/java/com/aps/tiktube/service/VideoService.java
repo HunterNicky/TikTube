@@ -361,9 +361,9 @@ public class VideoService {
 
         for (Video video : videos) {
             Document videoDocument = video.toDocument();
-            videoDocument.put("views", numOfViews(video.getVideoId()));
-            videoDocument.put("likes", numOfLikes(video.getVideoId()));
-            videoDocument.put("username", getUsername(video.getUserId()));
+            videoDocument.put("views", numOfViews(video.getId()));
+            videoDocument.put("likes", numOfLikes(video.getId()));
+            videoDocument.put("username", getUsername(video.getId()));
             videoDocument.put("id", video.getId());
             videosInfo.put(videoDocument);
         }
@@ -411,8 +411,8 @@ public class VideoService {
 
         for (Video video : videos) {
             Document videoDocument = video.toDocument();
-            videoDocument.put("views", numOfViews(video.getVideoId()));
-            videoDocument.put("likes", numOfLikes(video.getVideoId()));
+            videoDocument.put("views", numOfViews(video.getId()));
+            videoDocument.put("likes", numOfLikes(video.getId()));
             videoDocument.put("id", video.getId());
             videoDocument.put("username", getUsername(video.getUserId()));
             documentsList.add(videoDocument);
@@ -441,8 +441,8 @@ public class VideoService {
         for (Video video : videos) {
             Document videoDocument = video.toDocument();
             videoDocument.put("id", video.getId());
-            videoDocument.put("views", numOfViews(video.getVideoId()));
-            videoDocument.put("likes", numOfLikes(video.getVideoId()));
+            videoDocument.put("views", numOfViews(video.getId()));
+            videoDocument.put("likes", numOfLikes(video.getId()));
             videoDocument.put("username", getUsername(video.getUserId()));
             documentsList.add(videoDocument);
         }
@@ -476,8 +476,8 @@ public class VideoService {
 
         for (Video video : videos) {
             Document videoInfo = video.toDocument();
-            videoInfo.put("views", numOfViews(video.getVideoId()));
-            videoInfo.put("likes", numOfLikes(video.getVideoId()));
+            videoInfo.put("views", numOfViews(video.getId()));
+            videoInfo.put("likes", numOfLikes(video.getId()));
             videoInfo.put("id", video.getId());
             videoInfo.put("username", getUsername(video.getUserId()));
             videosInfo.put(videoInfo);
