@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 import "./Comment.css";
 
-function Comment({ user, comment, date, username }) {
+function Comment({ comment, date, username }) {
   return (
     <div id="comment-container">
-      <span id="comment-user">{user}</span>
+      <span id="comment-user">{username}</span>
       <span id="comment-date">{dayjs(date).fromNow()}</span>
       <div id="comment-text">{comment}</div>
     </div>
