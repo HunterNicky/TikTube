@@ -380,10 +380,10 @@ public class VideoService {
 
             if (valor1 instanceof Integer && valor2 instanceof Integer) {
                 return Integer.compare((Integer) valor1, (Integer) valor2);
-            } else if (valor1 instanceof String && valor2 instanceof String) {
-                return ((String) valor1).compareTo((String) valor2);
             } else if (valor1 instanceof Date && valor2 instanceof Date) {
                 return ((Date) valor1).compareTo((Date) valor2);
+            } else if (valor1 instanceof String && valor2 instanceof String) {
+                return ((String) valor1).compareTo((String) valor2);
             } else {
                 throw new UnsupportedOperationException("Error" + valor1.getClass());
             }
@@ -493,13 +493,20 @@ public class VideoService {
         List<Like> likes = likeAccess.where("user_id", user.getId());
         likeAccess.close();
 
-        JSONObject likesInfo = new JSONObject();
+        JSONArray likesInfo = new JSONArray();
 
+        Access<Video> videoAccess = new Access<>(Video.class);
         for (Like like : likes) {
-            JSONObject likeInfo = new JSONObject();
-            likeInfo.put(VIDEO, like.getVideoId());
-            likesInfo.put(like.getId(), likeInfo);
+            Document likeInfo = like.toDocument();
+            Video video = videoAccess.getById(like.getVideoId());
+            Document videoDocument = video.toDocument();
+            videoDocument.put("views", numOfViews(video.getId()));
+            videoDocument.put("likes", numOfLikes(video.getId()));
+            videoDocument.put("username", getUsername(video.getUserId()));
+            likeInfo.put("video", videoDocument);
+            likesInfo.put(likeInfo);
         }
+        videoAccess.close();
 
         return likesInfo.toString();
     }

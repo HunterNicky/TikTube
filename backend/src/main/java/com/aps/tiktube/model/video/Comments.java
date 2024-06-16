@@ -94,7 +94,8 @@ public class Comments extends Entity<Comments> {
         value = doc.get("data");
         if (value != null) {
             try {
-                SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+                inputFormat.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
                 Date parsedDate = inputFormat.parse(value.toString());
 
                 this.data = parsedDate;

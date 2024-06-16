@@ -30,7 +30,7 @@ public class Like extends Entity<Like> {
     }
 
     @Override
-    protected Document toDocument() {
+    public Document toDocument() {
         Document doc = new Document();
 
         doc.append("video_id", videoId);
@@ -40,7 +40,7 @@ public class Like extends Entity<Like> {
     }
 
     @Override
-    protected void fromDocument(Document doc) {
+    public void fromDocument(Document doc) {
         Object value;
 
         value = doc.get("video_id");

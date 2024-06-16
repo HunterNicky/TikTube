@@ -121,9 +121,11 @@ public class Video extends Entity<Video> {
         value = doc.get("publish_date");
         if (value != null) {
             try {
-                SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+                inputFormat.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+                
                 Date parsedDate = inputFormat.parse(value.toString());
-
+                
                 this.publishDate = parsedDate;
             } catch (ParseException e) {
 
