@@ -490,7 +490,7 @@ public class VideoService {
     public String getUserLikes(String token) {
         User user = TokenManager.getUser(token);
         Access<Like> likeAccess = new Access<>(Like.class);
-        List<Like> likes = likeAccess.where(Arrays.asList("userId"), Arrays.asList(user.getId()));
+        List<Like> likes = likeAccess.where("user_id", user.getId());
         likeAccess.close();
 
         JSONObject likesInfo = new JSONObject();
