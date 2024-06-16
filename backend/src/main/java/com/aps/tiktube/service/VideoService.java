@@ -220,7 +220,7 @@ public class VideoService {
      */
     public String numOfViews(String videoId) {
         Access<Views> viewsAccess = new Access<>(Views.class);
-        List<Views> views = viewsAccess.where(Arrays.asList(VIDEOID), Arrays.asList(videoId));
+        List<Views> views = viewsAccess.where(VIDEOID, videoId);
         viewsAccess.close();
         return Integer.toString(views.size());
     }
@@ -233,7 +233,7 @@ public class VideoService {
      */
     public String numOfLikes(String videoId) {
         Access<Like> likeAccess = new Access<>(Like.class);
-        List<Like> likes = likeAccess.where(Arrays.asList(VIDEOID), Arrays.asList(videoId));
+        List<Like> likes = likeAccess.where(VIDEOID, videoId);
         likeAccess.close();
         return Integer.toString(likes.size());
     }
@@ -332,16 +332,11 @@ public class VideoService {
 
         JSONArray commentsInfo = new JSONArray();
 
-        int i = 0;
         for (Comments comment : comments) {
-            JSONObject commentInfo = new JSONObject();
-            commentInfo.put("User", comment.getUserId());
+            Document commentInfo = comment.toDocument();
             commentInfo.put("UserName", getUsername(comment.getUserId()));
-            commentInfo.put("Comment", comment.getComment());
-            commentInfo.put("Date", comment.getData());
             commentInfo.put("id", comment.getId());
-            commentsInfo.put(i, commentInfo);
-            i++;
+            commentsInfo.put(commentInfo);
         }
 
         return commentsInfo.toString();

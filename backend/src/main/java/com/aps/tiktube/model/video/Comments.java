@@ -57,7 +57,7 @@ public class Comments extends Entity<Comments> {
     }
 
     @Override
-    protected Document toDocument() {
+    public Document toDocument() {
         Document doc = new Document();
 
         doc.append("comment", comment);
@@ -73,7 +73,7 @@ public class Comments extends Entity<Comments> {
     }
 
     @Override
-    protected void fromDocument(Document doc) {
+    public void fromDocument(Document doc) {
         Object value;
 
         value = doc.get("comment");
