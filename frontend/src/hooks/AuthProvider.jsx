@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUserInfo } from "../utils/UserAPI";
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 
@@ -46,8 +47,9 @@ function AuthProvider({ children }) {
 
   const logOut = () => {
     setUser(undefined);
-    setToken("UNREGISTERED");
-    localStorage.setItem("tiktube", "UNREGISTERED");
+    setToken("unregistered");
+    localStorage.setItem("tiktube", "unregistered");
+    toast("Logged off!");
   };
 
   return (

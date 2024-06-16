@@ -75,3 +75,23 @@ export async function likeVideo(token, videoId) {
     console.log(err);
   }
 }
+
+export async function getLikedVideos(token) {
+  try {
+    const res = await axios.get(baseUrl + "/getuserlikes/" + token);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function addView(token, videoId) {
+  try {
+    const fd = new FormData;
+    fd.append("token", token);
+    fd.append("videoId", videoId);
+    const res = await axios.post(baseUrl + "/addview", fd);
+  } catch (err) {
+    console.log(err);
+  }
+}

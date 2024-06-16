@@ -17,7 +17,7 @@ const baseStyle = {
 
 const focusedStyle = {
   borderColor: "#2196f3",
-  color: "#2196f3"
+  color: "#2196f3",
 };
 
 const acceptStyle = {
@@ -34,7 +34,12 @@ function VideoUpload({ video, setVideo }) {
   }, []);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
-    useDropzone({ onDrop });
+    useDropzone({
+      onDrop,
+      accept: {
+        "video/*": [],
+      },
+    });
 
   const style = useMemo(
     () => ({

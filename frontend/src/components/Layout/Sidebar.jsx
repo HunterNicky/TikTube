@@ -14,6 +14,13 @@ function Sidebar() {
     navigate(path);
   }
 
+  function handleAuthClick() {
+    if (auth.user == undefined)
+      auth.setAuthModal(true);
+    else
+      auth.logOut();
+  }
+
   return (
     <aside>
       <nav className="navbar">
@@ -97,7 +104,7 @@ function Sidebar() {
             </div>
           </li>
           <li className="nav-item">
-            <div className="nav-link" onClick={() => auth.setAuthModal(true)}>
+            <div className="nav-link" onClick={handleAuthClick}>
               {
                 auth.user == undefined ?
                 <svg
