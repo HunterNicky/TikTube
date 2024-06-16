@@ -5,8 +5,8 @@ function HomePage() {
   return (
     <>
       <VideoSection getVideos={getTrendingVideos} categoryTitle="Trending" />
-      <VideoSection getVideos={getNewVideos} categoryTitle="New" />
-      <VideoSection getVideos={getTrendingVideos} categoryTitle="Test" />
+      {/*<VideoSection getVideos={getNewVideos} categoryTitle="New" /> */}
+      <VideoSection getVideos={getTrendingVideos} categoryTitle="Recommended" />
     </>
   );
 }

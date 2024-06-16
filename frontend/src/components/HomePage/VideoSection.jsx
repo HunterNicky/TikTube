@@ -34,8 +34,9 @@ function VideoSection({ getVideos, categoryTitle }) {
               <VideoCard
                 key={obj.id}
                 id={obj.id}
-                title={obj.title}
+                title={obj.video_name}
                 views={obj.views}
+                username={obj.username}
               />
             ))}
       </div>

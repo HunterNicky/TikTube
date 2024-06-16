@@ -7,7 +7,7 @@ import defaultThumbnail from "../../assets/default_thumbnail.png";
 import "./VideoCard.css";
 import dayjs from "dayjs";
 
-function VideoCard({ id, title, views }) {
+function VideoCard({ id, title, views, username }) {
   const [videoInfo, setVideoInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useAuth();
@@ -37,10 +37,10 @@ function VideoCard({ id, title, views }) {
       />
       <div className="video-info">
         <p className="video-title">{title}</p>
-        <p className="video-author">Author</p>
+        <p className="video-author">{username}</p>
         <span className="video-views">{views} views</span>
         <span className="video-circle">●</span>
-        <span>{dayjs(videoInfo?.publish_date?.$date).fromNow()}</span>
+        <span>{dayjs(videoInfo?.publish_date).fromNow()}</span>
       </div>
     </Link>
   );

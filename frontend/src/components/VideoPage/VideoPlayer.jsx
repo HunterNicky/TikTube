@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getVideoInfo, likeVideo } from "../../utils/VideoAPI.js";
+import { addView, getVideoInfo, likeVideo } from "../../utils/VideoAPI.js";
 import { useAuth } from "../../hooks/AuthProvider.jsx";
 import "./VideoPlayer.css";
 import CommentSection from "./CommentSection.jsx";
@@ -9,6 +9,8 @@ import dayjs from "dayjs";
 function VideoPlayer() {
   const [videoInfo, setVideoInfo] = useState(null);
   const [video, setVideo] = useState(null);
+  const [liked, setLiked] = useState(false);
+  const [view, setView] = useState(false);
   const { id } = useParams();
   const { token } = useAuth();
 
@@ -33,10 +35,16 @@ function VideoPlayer() {
     getVideo();
   }, []);
 
-  async function increaseViewCount() {}
+  async function increaseViewCount() {
+    if (view) return
+    addView(token, id);
+    setView(true);
+  }
 
   function clickLike() {
+    if (liked) return;
     likeVideo(token, id);
+    setLiked(true);
   }
 
   return (
@@ -48,10 +56,10 @@ function VideoPlayer() {
       <div className="video-info-player">
         <div>
           <p className="player-title">{videoInfo?.video_name}</p>
-          <p>Author</p>
+          <p>{videoInfo?.username}</p>
         </div>
         <div className="like-container">
-          <span onClick={clickLike}>
+          <span onClick={clickLike} >
             <svg
               className="w-6 h-6 text-gray-800 dark:text-white"
               aria-hidden="true"
@@ -94,7 +102,7 @@ function VideoPlayer() {
       <div id="description-container">
         <div id="video-view-date">
           <span id="video-view-info">{videoInfo?.views} views</span>
-          <span>{dayjs(videoInfo?.publish_date.$date).fromNow()}</span>
+          <span>{dayjs(videoInfo?.publish_date).fromNow()}</span>
         </div>
         <div>{videoInfo?.description}</div>
       </div>

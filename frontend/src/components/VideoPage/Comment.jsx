@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import "./Comment.css";
 
-function Comment({ user, comment, date }) {
+function Comment({ user, comment, date, username }) {
   return (
     <div id="comment-container">
       <span id="comment-user">{user}</span>

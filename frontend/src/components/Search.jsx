@@ -22,7 +22,7 @@ function Search() {
         const res = await getAllVideos(token);
         const query = searchParams.get("q").toLocaleLowerCase();
         setVideos(
-          res.filter((obj) => obj.title.toLocaleLowerCase().includes(query))
+          res.filter((obj) => obj.video_name.toLocaleLowerCase().includes(query))
         );
         setIsLoading(false);
       } catch (err) {
@@ -56,7 +56,7 @@ function Search() {
             <VideoCard
               key={obj.id}
               id={obj.id}
-              title={obj.title}
+              title={obj.video_name}
               views={obj.views}
             />
           ))}
