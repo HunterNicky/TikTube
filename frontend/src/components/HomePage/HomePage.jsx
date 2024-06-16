@@ -1,11 +1,12 @@
+import { getNewVideos, getTrendingVideos } from "../../utils/VideoAPI";
 import VideoSection from "./VideoSection";
 
 function HomePage() {
   return (
     <>
-      <VideoSection categoryTitle={"Trending"} />
-      <VideoSection categoryTitle={"New"} />
-      <VideoSection categoryTitle={"Test"} />
+      <VideoSection getVideos={getTrendingVideos} categoryTitle="Trending" />
+      <VideoSection getVideos={getNewVideos} categoryTitle="New" />
+      <VideoSection getVideos={getTrendingVideos} categoryTitle="Test" />
     </>
   );
 }

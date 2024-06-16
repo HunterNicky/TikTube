@@ -3,13 +3,26 @@ import { useAuth } from "../../hooks/AuthProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./CommentSection.css";
+import { getComments } from "../../utils/VideoAPI";
+import Comment from "./Comment";
 
 function CommentSection({ id }) {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(null);
   const [comment, setComment] = useState(null);
   const { token } = useAuth();
 
-  useEffect(() => {}, []);
+  const getData = async () => {
+    try {
+      const res = await getComments(token, id);
+      setComments(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   function handleOnChange(e) {
     const { value } = e.target;
@@ -27,17 +40,19 @@ function CommentSection({ id }) {
 
     try {
       const res = await axios.post(baseUrl + "/commentvideo", fd);
-      if (res.data == "Comment added") toast("Comment added!");
-      else throw new Error("Failed adding comment!");
+      if (res.data == "Comment added") {
+        toast("Comment added!");
+        getData();
+      } else throw new Error("Failed adding comment!");
     } catch (err) {
       console.log(err);
       toast(err.message);
-    } 
+    }
   }
 
   return (
     <div id="comments-container">
-      <form onSubmit={(e) => handleSubmit(e)} id="comment-container">
+      <form onSubmit={(e) => handleSubmit(e)} id="comment-input-container">
         <textarea
           type="text"
           id="video-comment"
@@ -49,12 +64,9 @@ function CommentSection({ id }) {
         <input type="submit" value="Comment" id="submit-comment" />
       </form>
       <div>
-        {comments.map((obj) => {
-          <div>
-            <span>{}</span>
-            <span>{}</span>
-          </div>;
-        })}
+        {comments?.map((obj) => (
+          <Comment key={obj.id} user={obj.User} comment={obj.Comment} date={obj.Date}/>
+        ))}
       </div>
     </div>
   );

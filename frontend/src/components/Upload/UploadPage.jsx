@@ -49,7 +49,8 @@ function UploadPage() {
         },
       });
       setUploadPercent(99);
-      fdT.append("videoId", res.data);
+      fdT.append("videoId", res.data.id);
+      console.log(res.data);
       const resT = await axios.post(baseUrl + "/addthumbnail", fdT);
       setUploadPercent(100);
       toast("Uploaded video successfully!");

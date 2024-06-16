@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getVideoInfo } from "../../utils/VideoAPI.js";
+import { getVideoInfo, likeVideo } from "../../utils/VideoAPI.js";
 import { useAuth } from "../../hooks/AuthProvider.jsx";
 import "./VideoPlayer.css";
 import CommentSection from "./CommentSection.jsx";
+import dayjs from "dayjs";
 
 function VideoPlayer() {
-  const [videoInfo, setVideoInfo] = useState({});
+  const [videoInfo, setVideoInfo] = useState(null);
   const [video, setVideo] = useState(null);
   const { id } = useParams();
   const { token } = useAuth();
@@ -20,7 +21,9 @@ function VideoPlayer() {
           throw new Response("Not Found", { statusText: "404 Not Found" });
         else {
           setVideoInfo(res);
-          setVideo(baseUrl + "/getmedia/" + res.video_id + "/" + token + "/Video");
+          setVideo(
+            baseUrl + "/getmedia/" + res.video_id + "/" + token + "/Video"
+          );
         }
       } catch (err) {
         console.log(err);
@@ -29,9 +32,11 @@ function VideoPlayer() {
 
     getVideo();
   }, []);
-  
-  async function increaseViewCount() {
 
+  async function increaseViewCount() {}
+
+  function clickLike() {
+    likeVideo(token, id);
   }
 
   return (
@@ -42,12 +47,11 @@ function VideoPlayer() {
       </video>
       <div className="video-info-player">
         <div>
-          <p className="player-title">{videoInfo.video_name}</p>
+          <p className="player-title">{videoInfo?.video_name}</p>
           <p>Author</p>
-          <p>84M views</p>
         </div>
         <div className="like-container">
-          <span>
+          <span onClick={clickLike}>
             <svg
               className="w-6 h-6 text-gray-800 dark:text-white"
               aria-hidden="true"
@@ -88,9 +92,12 @@ function VideoPlayer() {
         </div>
       </div>
       <div id="description-container">
-          <span>{}</span>
-          <span>{videoInfo.description}</span>
+        <div id="video-view-date">
+          <span id="video-view-info">{videoInfo?.views} views</span>
+          <span>{dayjs(videoInfo?.publish_date.$date).fromNow()}</span>
         </div>
+        <div>{videoInfo?.description}</div>
+      </div>
       <CommentSection id={id} />
     </div>
   );

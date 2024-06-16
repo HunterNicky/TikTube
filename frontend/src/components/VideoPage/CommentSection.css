@@ -1,12 +1,13 @@
 #comments-container {
   width: 85vw;
   color: var(--text-primary);
+  margin-top: 3rem;
 }
 
-#comment-container {
+#comment-input-container {
   display: flex;
   flex-direction: column;
-  margin: 1.5rem 0;
+  margin: .5rem 0;
 }
 
 #video-comment {

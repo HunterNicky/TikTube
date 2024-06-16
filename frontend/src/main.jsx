@@ -12,11 +12,15 @@ import VideoPlayer from "./components/VideoPage/VideoPlayer.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
 import AuthModal from "./components/Auth/AuthModal.jsx";
 import AuthProvider from "./hooks/AuthProvider.jsx";
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./index.css";
+
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime"
+import UserVideosPage from "./components/UserVideosPage.jsx";
+dayjs.extend(relativeTime);
 
 function Navigation() {
   return (
@@ -63,6 +67,10 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+          {
+            path: "videos",
+            element: <UserVideosPage />
+          },
           {
             path: "favorites",
             element: <FavoritesPage />,

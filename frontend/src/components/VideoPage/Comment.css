@@ -1,0 +1,14 @@
+#comment-container {
+  margin: .9rem 0;
+  font-size: 15px;
+}
+
+#comment-user {
+  font-weight: bold;
+  margin-right: 1.5rem;
+}
+
+#comment-date {
+  font-size: 13px;
+  vertical-align: middle;
+}

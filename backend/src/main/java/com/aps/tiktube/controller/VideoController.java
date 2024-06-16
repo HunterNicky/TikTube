@@ -98,7 +98,7 @@ public class VideoController {
 
         try {
             VideoService videoService = new VideoService();
-            return ResponseEntity.ok(videoService.likeVideo(token, videoId));
+            return ResponseEntity.ok(videoService.likeVideo(videoId, token));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error liking video");
         }

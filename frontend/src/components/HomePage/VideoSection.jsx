@@ -2,18 +2,17 @@ import { useEffect, useState } from "react";
 import VideoCard from "./VideoCard.jsx";
 import LoadingCard from "./LoadingCard.jsx";
 import "./VideoSection.css";
-import { getAllVideos } from "../../utils/VideoAPI.js";
 import { useAuth } from "../../hooks/AuthProvider.jsx";
 
-function VideoSection({ categoryTitle }) {
-  const [videos, setVideos] = useState({});
+function VideoSection({ getVideos, categoryTitle }) {
+  const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useAuth();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        setVideos(await getAllVideos(token));
+        setVideos(await getVideos(token));
         setIsLoading(false);
       } catch (err) {
         console.log(err);

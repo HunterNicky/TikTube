@@ -10,8 +10,16 @@
   border-radius: .2rem;
   width: 300px;
   height: 169px;
+  object-fit: contain;
+  background-color: var(--bg-secondary);
 }
 
 .video-title {
   font-weight: bold;
+}
+
+.video-circle {
+  font-size: 10px;
+  margin: 0 0.5rem;
+  vertical-align: middle;
 }
