@@ -47,7 +47,7 @@ public class VideoController {
     @PostMapping("/addthumbnail")
     public ResponseEntity<Object> addThumbnail(@RequestParam("file") MultipartFile file,
             @RequestParam("token") String token,
-            @RequestParam("videoId") String videoId){
+            @RequestParam("videoId") String videoId) {
         if (!TokenManager.verify(token))
             return ResponseEntity.status(401).body(INVALIDTOKEN);
 
@@ -101,6 +101,22 @@ public class VideoController {
             return ResponseEntity.ok(videoService.likeVideo(videoId, token));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error liking video");
+        }
+    }
+
+    @PostMapping("/addview")
+    public ResponseEntity<Object> addView(@RequestParam("videoId") String videoId,
+            @RequestParam("token") String token) {
+        if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
+            return ResponseEntity.status(401).body(INVALIDTOKEN);
+
+        TokenManager.updateTokenLastTimeUsed(token);
+
+        try {
+            VideoService videoService = new VideoService();
+            return ResponseEntity.ok(videoService.addViews(videoId, token));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error adding view");
         }
     }
 
@@ -160,7 +176,6 @@ public class VideoController {
             return ResponseEntity.status(500).body("Error getting thumbnail");
         }
     }
-    
 
     @GetMapping("/getvideoinfo/{videoId}/{token}")
     public ResponseEntity<Object> getVideoInfo(@PathVariable("videoId") String videoId,
@@ -255,8 +270,8 @@ public class VideoController {
         }
     }
 
-    @GetMapping("/getuserlikes/{videoId}/{token}")
-    public ResponseEntity<Object> getUserLikes(@PathVariable("videoId") String videoId,
+    @GetMapping("/getuserlikes/{token}")
+    public ResponseEntity<Object> getUserLikes(
             @PathVariable("token") String token) {
         if (!TokenManager.verify(token))
             return ResponseEntity.status(401).body(INVALIDTOKEN);
@@ -265,7 +280,7 @@ public class VideoController {
 
         try {
             VideoService videoService = new VideoService();
-            return ResponseEntity.ok(videoService.getUserLikes(videoId));
+            return ResponseEntity.ok(videoService.getUserLikes(token));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error getting user likes");
         }

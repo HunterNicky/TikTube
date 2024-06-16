@@ -310,6 +310,7 @@ public class VideoService {
         Document videoInfo = video.toDocument();
         videoInfo.put("views", numOfViews(videoId));
         videoInfo.put("likes", numOfLikes(videoId));
+        videoInfo.put("username", getUsername(video.getUserId()));
 
         return videoInfo.toJson().toString();
     }
@@ -327,10 +328,11 @@ public class VideoService {
 
         JSONArray commentsInfo = new JSONArray();
 
-        int i  = 0;
+        int i = 0;
         for (Comments comment : comments) {
             JSONObject commentInfo = new JSONObject();
             commentInfo.put("User", comment.getUserId());
+            commentInfo.put("UserName", getUsername(comment.getUserId()));
             commentInfo.put("Comment", comment.getComment());
             commentInfo.put("Date", comment.getData());
             commentInfo.put("id", comment.getId());
@@ -364,6 +366,7 @@ public class VideoService {
             if (video.get("thumbnail_id") != null) {
                 videoInfo.put("thumbnail_id", video.get("thumbnail_id").toString());
             }
+            videoInfo.put("username", getUsername(video.get("user_id").toString()));
             videosInfo.put(videoInfo);
         }
 
@@ -413,6 +416,7 @@ public class VideoService {
             if (video.get("thumbnail_id") != null) {
                 videoInfo.put("thumbnail_id", video.get("thumbnail_id").toString());
             }
+            videoInfo.put("username", getUsername(video.get("user_id").toString()));
             videosInfo.put(videoInfo);
         }
 
@@ -448,6 +452,7 @@ public class VideoService {
             if (video.get("thumbnail_id") != null) {
                 videoInfo.put("thumbnail_id", video.get("thumbnail_id").toString());
             }
+            videoInfo.put("username", getUsername(video.get("user_id").toString()));
             videosInfo.put(videoInfo);
         }
 
@@ -472,7 +477,12 @@ public class VideoService {
         JSONArray videosInfo = new JSONArray();
 
         for (Video video : videos) {
-            videosInfo.put(video.toDocument());
+            Document videoInfo = video.toDocument();
+            videoInfo.put("views", numOfViews(video.getVideoId()));
+            videoInfo.put("likes", numOfLikes(video.getVideoId()));
+            videoInfo.put("id", video.getId());
+            videoInfo.put("username", getUsername(video.getUserId()));
+            videosInfo.put(videoInfo);
         }
 
         return videosInfo.toString();
@@ -499,5 +509,12 @@ public class VideoService {
         }
 
         return likesInfo.toString();
+    }
+
+    private String getUsername(String userId) {
+        Access<User> userAccess = new Access<>(User.class);
+        User user = userAccess.getById(userId);
+        userAccess.close();
+        return user.getUserName();
     }
 }
