@@ -4,7 +4,7 @@ import LoadingCard from "./LoadingCard.jsx";
 import "./VideoSection.css";
 import { useAuth } from "../../hooks/AuthProvider.jsx";
 
-function VideoSection({ getVideos, categoryTitle }) {
+function VideoSection({ getVideos, categoryTitle, range }) {
   const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useAuth();
@@ -27,10 +27,10 @@ function VideoSection({ getVideos, categoryTitle }) {
       <h3 className="video-category-title">{categoryTitle}</h3>
       <div className="video-category-container">
         {isLoading
-          ? Array(5)
+          ? Array(range)
               .fill(0)
               .map((_, i) => <LoadingCard key={i} />)
-          : videos.map((obj) => (
+          : videos.slice(0, range).map((obj) => (
               <VideoCard
                 key={obj.id}
                 id={obj.id}

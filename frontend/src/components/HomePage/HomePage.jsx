@@ -4,9 +4,9 @@ import VideoSection from "./VideoSection";
 function HomePage() {
   return (
     <>
-      <VideoSection getVideos={getTrendingVideos} categoryTitle="Trending" />
-      <VideoSection getVideos={getNewVideos} categoryTitle="New" />
-      <VideoSection getVideos={getTrendingVideos} categoryTitle="Recommended" />
+      <VideoSection getVideos={getTrendingVideos} categoryTitle="Trending" range={10}/>
+      <VideoSection getVideos={getNewVideos} categoryTitle="New" range={10}/>
+      <VideoSection getVideos={getTrendingVideos} categoryTitle="Recommended" range={20}/>
     </>
   );
 }

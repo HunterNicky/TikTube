@@ -3,7 +3,7 @@ import VideoSection from "./HomePage/VideoSection";
 
 function UserVideosPage() {
   return (
-    <VideoSection getVideos={getUserVideos} categoryTitle={"Your Videos"} />
+    <VideoSection getVideos={getUserVideos} categoryTitle={"Your Videos"} range={30}/>
   );
 }
 
