@@ -23,10 +23,6 @@ public class Video extends Entity<Video> {
     
     private Date publishDate;
 
-    public String getThumbnailId() {
-        return thumbnailId;
-    }
-
     public void setThumbnailId(String thumbnailId) {
         this.thumbnailId = thumbnailId;
     }
@@ -47,24 +43,12 @@ public class Video extends Entity<Video> {
         this.userId = userId;
     }
 
-    public String getVideoId() {
-        return videoId;
-    }
-
     public void setVideoId(String videoId) {
         this.videoId = videoId;
     }
 
     public void setVideoName(String videoName) {
         this.videoName = videoName;
-    }
-
-    public String getVideoName() {
-        return videoName;
-    }
-
-    public Date getPublishDate() {
-        return publishDate;
     }
 
     public void setPublishDate(Date publishDate) {
@@ -123,10 +107,8 @@ public class Video extends Entity<Video> {
             try {
                 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
                 inputFormat.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
-                
-                Date parsedDate = inputFormat.parse(value.toString());
-                
-                this.publishDate = parsedDate;
+
+                this.publishDate = inputFormat.parse(value.toString());
             } catch (ParseException e) {
 
                 e.printStackTrace();

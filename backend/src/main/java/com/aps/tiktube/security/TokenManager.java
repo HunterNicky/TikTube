@@ -12,7 +12,7 @@ import com.aps.tiktube.model.video.Comments;
 import com.aps.tiktube.model.video.Like;
 
 public class TokenManager {
-    private static final String TOKENVALUE = "TokenValue";
+    private static final String TOKEN_VALUE = "TokenValue";
 
     private TokenManager() {
     }
@@ -23,14 +23,14 @@ public class TokenManager {
 
     public static boolean verify(String token) {
         Access<Token> access = new Access<>(Token.class);
-        List<Token> tokens = access.where(TOKENVALUE, token);
+        List<Token> tokens = access.where(TOKEN_VALUE, token);
         access.close();
         return !tokens.isEmpty();
     }
 
     public static User getUser(String token) {
         Access<Token> access = new Access<>(Token.class);
-        Token tk = access.first(TOKENVALUE, token);
+        Token tk = access.first(TOKEN_VALUE, token);
         access.close();
 
         Access<User> useraccess = new Access<>(User.class);
@@ -50,7 +50,7 @@ public class TokenManager {
 
     public static void deleteToken(String tokenValue) {
         Access<Token> tokenAccess = new Access<>(Token.class);
-        List<Token> tokenList = tokenAccess.where(TOKENVALUE, tokenValue);
+        List<Token> tokenList = tokenAccess.where(TOKEN_VALUE, tokenValue);
         if (!tokenList.isEmpty())
             tokenAccess.deleteById(tokenList.get(0).getId());
     }
@@ -73,7 +73,7 @@ public class TokenManager {
         if (tokenValue.equals("unregistered"))
             return;
         Access<Token> tokenAccess = new Access<>(Token.class);
-        Token token = tokenAccess.where(TOKENVALUE, tokenValue).get(0);
+        Token token = tokenAccess.where(TOKEN_VALUE, tokenValue).get(0);
         token.setLastTimeUsed(System.currentTimeMillis() / 1000L);
         token.save();
         tokenAccess.close();

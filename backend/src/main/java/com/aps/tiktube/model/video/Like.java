@@ -41,9 +41,7 @@ public class Like extends Entity<Like> {
 
     @Override
     public void fromDocument(Document doc) {
-        Object value;
-
-        value = doc.get("video_id");
+        Object value = doc.get("video_id");
         if (value instanceof String) {
             this.videoId = (String) value;
         }

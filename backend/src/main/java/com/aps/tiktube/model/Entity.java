@@ -19,30 +19,16 @@ public abstract class Entity<T extends Entity<T>> {
         return this.id;
     }
 
-    public void setID(String value) {
-        this.id = value;
-    }
-
-    public Document save() {
+    public void save() {
         Access<T> access = new Access<>(getTClass());
         if (this.exist) {
-            Document doc = access.update(this);
+            access.update(this);
             access.close();
-            return doc;
         } else {
             this.id = access.add(this);
             this.exist = true;
             access.close();
-            return this.toDocument();
-        }
-    }
-
-    public void delete() {
-        if (this.exist) {
-            Access<T> access = new Access<>(getTClass());
-            access.deleteById(this.id);
-            this.exist = false;
-            access.close();
+            this.toDocument();
         }
     }
 

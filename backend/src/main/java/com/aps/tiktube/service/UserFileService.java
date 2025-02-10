@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -24,8 +25,7 @@ public class UserFileService {
 
     /**
      * Constructor for UserFileService
-     * 
-     * @param user
+     *
      */
     public UserFileService(User user) {
         try {
@@ -40,7 +40,6 @@ public class UserFileService {
     /**
      * Upload a file
      * 
-     * @param file
      * @return Path
      */
     private Path conflictSolve(MultipartFile file, Path path) {
@@ -49,7 +48,7 @@ public class UserFileService {
             if (fileName != null) {
                 String[] name = fileName.split("\\.");
                 String newName = name[0] + "_1." + name[1];
-                return conflictSolve(file, Paths.get(path.toString() + "/" + newName));
+                return conflictSolve(file, Paths.get(path + "/" + newName));
             }
         }
         return path;
@@ -58,7 +57,6 @@ public class UserFileService {
     /**
      * Save the uploads
      * 
-     * @param file
      * @return Path
      */
     public Path saveUploads(MultipartFile file) {
@@ -74,25 +72,15 @@ public class UserFileService {
     }
 
     /**
-     * Get the upload path
-     * 
-     * @return Path
-     */
-    public Path getUploadPath() {
-        return uploadPath;
-    }
-
-    /**
      * Unzip a file
      * 
-     * @param path
      * @return Path
      */
     public Path unzip(Path path) {
         try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(path))) {
             ZipEntry entry = zipInputStream.getNextEntry();
             byte[] buffer = new byte[1024];
-            File destFile = new File(uploadPath.resolve(entry.getName()).toString());
+            File destFile = new File(uploadPath.resolve(Objects.requireNonNull(entry).getName()).toString());
             FileOutputStream fos = new FileOutputStream(destFile);
             int len;
             while ((len = zipInputStream.read(buffer)) > 0) {
@@ -110,8 +98,7 @@ public class UserFileService {
 
     /**
      * Remove a file
-     * 
-     * @param path
+     *
      */
     public static void removeFile(Path path) {
         try {
@@ -123,18 +110,8 @@ public class UserFileService {
     }
 
     /**
-     * Remove a file
-     * 
-     * @param path
-     */
-    public static void removeFile(String path) {
-        removeFile(Paths.get(path));
-    }
-
-    /**
      * Remove multiple files
-     * 
-     * @param paths
+     *
      */
     public static void removeMultipleFiles(List<Path> paths) {
         for (Path path : paths) {
@@ -145,9 +122,7 @@ public class UserFileService {
     /**
      * Get the file id
      * 
-     * @param file
-     * @param entity
-     * @return file Id
+     * @return file id
      */
     public <T extends Entity<T>> String getFileId(MultipartFile file, T entity, String bucketName) {
         List<Path> pathList = new ArrayList<>();

@@ -19,7 +19,6 @@ public class UserService {
     /**
      * Create the user if the information is valid
      * 
-     * @param user
      * @return Error or Success
      */
     public String createUser(User user) {
@@ -41,7 +40,7 @@ public class UserService {
         if (user.getPassword() == null || user.getPassword().isEmpty())
             message = "Invalid password";
 
-        if (!message.equals("")) {
+        if (!message.isEmpty()) {
             return message;
         }
 
@@ -78,7 +77,6 @@ public class UserService {
     /**
      * Get a user by its id
      * 
-     * @param userId
      * @return User
      */
     public String getUserName(String userId) {
@@ -91,27 +89,11 @@ public class UserService {
     }
 
     /**
-     * Delete a user
-     * 
-     * @param userId
-     */
-    public void deleteUserByUserId(String userId) {
-        try {
-            Access<User> access = new Access<>(User.class);
-            access.deleteById(userId);
-            access.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * If a user is valid and creates a token associated with the user.
-     * @param user
      * @return Error or Success
      */
     public String login(User user) {
-        String message = "";
+        String message;
 
         String encoded = DigestUtils.sha256Hex(user.getPassword());
         Access<User> access = new Access<>(User.class);
@@ -140,20 +122,6 @@ public class UserService {
 
         return "Already have a user logged in";
 
-    }
-
-    /**
-     * Logout a user
-     * 
-     * @param token
-     * @return Error or Success
-     */
-    public String logout(String token) {
-        if (TokenManager.verify(token)) {
-            TokenManager.deleteToken(token);
-            return "Logged out";
-        }
-        return "Token not found";
     }
 
 }

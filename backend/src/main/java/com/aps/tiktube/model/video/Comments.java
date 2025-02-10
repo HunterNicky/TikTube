@@ -19,16 +19,8 @@ public class Comments extends Entity<Comments> {
 
     private Date data;
 
-    public Date getData() {
-        return data;
-    }
-
     public void setData(Date data) {
         this.data = data;
-    }
-
-    public String getComment() {
-        return comment;
     }
 
     public void setComment(String comment) {
@@ -41,10 +33,6 @@ public class Comments extends Entity<Comments> {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getVideoId() {
-        return videoId;
     }
 
     public void setVideoId(String videoId) {
@@ -96,9 +84,8 @@ public class Comments extends Entity<Comments> {
             try {
                 SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
                 inputFormat.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
-                Date parsedDate = inputFormat.parse(value.toString());
 
-                this.data = parsedDate;
+                this.data = inputFormat.parse(value.toString());
             } catch (ParseException e) {
 
                 e.printStackTrace();

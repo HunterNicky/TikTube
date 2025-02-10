@@ -25,19 +25,11 @@ public class Token extends Entity<Token> {
 
     private Boolean isActive;
 
-    public Boolean getIsActive() {
-        return this.isActive;
-    }
-
     public void setIsActive(Boolean value) {
         this.isActive = value;
     }
 
     private Long lastTimeUsed;
-
-    public Long getLastTimeUsed() {
-        return this.lastTimeUsed;
-    }
 
     public void setLastTimeUsed(Long value) {
         this.lastTimeUsed = value;

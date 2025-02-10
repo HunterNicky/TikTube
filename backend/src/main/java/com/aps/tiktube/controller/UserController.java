@@ -14,7 +14,7 @@ import com.aps.tiktube.service.UserService;
 
 @RestController
 public class UserController {
-    static final String ACCESCONTROLALLOW = "Access-Control-Allow-Origin";
+    static final String ACCESS_CONTROL_ALLOW = "Access-Control-Allow-Origin";
 
     @GetMapping("/getuser/{token}")
     public String getMethodName(@PathVariable("token") String token) {
@@ -33,16 +33,16 @@ public class UserController {
             String userName = new UserService().getUserName(id);
             if (userName.isEmpty()) {
                 return ResponseEntity.badRequest()
-                        .header(ACCESCONTROLALLOW)
+                        .header(ACCESS_CONTROL_ALLOW)
                         .body("User not found.");
             }
             return ResponseEntity.ok()
-                    .header(ACCESCONTROLALLOW)
+                    .header(ACCESS_CONTROL_ALLOW)
                     .body(userName);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest()
-                    .header(ACCESCONTROLALLOW)
+                    .header(ACCESS_CONTROL_ALLOW)
                     .body("_ERROR_15");
         }
     }
@@ -55,17 +55,17 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest()
-                    .header(ACCESCONTROLALLOW)
+                    .header(ACCESS_CONTROL_ALLOW)
                     .body("Error creating account");
         }
 
         if (!message.equals("SUCCESS"))
             return ResponseEntity.badRequest()
-                    .header(ACCESCONTROLALLOW)
+                    .header(ACCESS_CONTROL_ALLOW)
                     .body(message);
 
         return ResponseEntity.ok()
-                .header(ACCESCONTROLALLOW)
+                .header(ACCESS_CONTROL_ALLOW)
                 .body(message);
     }
 
@@ -76,17 +76,17 @@ public class UserController {
             String message = userService.login(user);
             if (!message.contains("Logged in.")) {
                 return ResponseEntity.badRequest()
-                        .header(ACCESCONTROLALLOW)
+                        .header(ACCESS_CONTROL_ALLOW)
                         .body(message);
             }
             Token token = TokenManager.getTokenById(message.substring(message.indexOf("Token: ") + 7));
             return ResponseEntity.ok()
-                    .header(ACCESCONTROLALLOW)
+                    .header(ACCESS_CONTROL_ALLOW)
                     .body(token.getTokenValue());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest()
-                    .header(ACCESCONTROLALLOW)
+                    .header(ACCESS_CONTROL_ALLOW)
                     .body("_ERROR_15");
         }
 

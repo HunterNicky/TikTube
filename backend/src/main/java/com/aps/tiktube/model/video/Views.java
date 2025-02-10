@@ -8,10 +8,6 @@ public class Views extends Entity<Views> {
     private String videoId;
     private String userId;
 
-    public String getVideoId() {
-        return videoId;
-    }
-
     public void setVideoId(String videoId) {
         this.videoId = videoId;
     }

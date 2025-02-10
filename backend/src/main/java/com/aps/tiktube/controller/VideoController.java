@@ -8,7 +8,6 @@ import com.aps.tiktube.model.video.Video;
 import com.aps.tiktube.security.TokenManager;
 import com.aps.tiktube.service.VideoService;
 
-import org.springframework.data.mongodb.repository.Update;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class VideoController {
-    private static final String INVALIDTOKEN = "Invalid token";
+    private static final String INVALID_TOKEN = "Invalid token";
     private static final String UNREGISTERED = "unregistered";
     private static final String UNAUTHORIZED = "Unauthorized";
     private static final String VIDEO = "Video";
@@ -29,7 +28,7 @@ public class VideoController {
             @RequestParam("token") String token, @RequestParam("title") String title,
             @RequestParam("description") String description) {
         if (!TokenManager.verify(token))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         if (file.isEmpty())
             return ResponseEntity.badRequest().body("File is empty");
@@ -49,7 +48,7 @@ public class VideoController {
             @RequestParam("token") String token,
             @RequestParam("videoId") String videoId) {
         if (!TokenManager.verify(token))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         if (Boolean.FALSE.equals(TokenManager.verifyTokenAccess(token, videoId, VIDEO))) {
             return ResponseEntity.status(401).body(UNAUTHORIZED);
@@ -72,7 +71,7 @@ public class VideoController {
     public ResponseEntity<Object> deleteVideo(@RequestParam("token") String token,
             @RequestParam("videoId") String videoId) {
         if (!TokenManager.verify(token))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         if (Boolean.FALSE.equals(TokenManager.verifyTokenAccess(token, TokenManager.getUser(token).getId(), VIDEO))) {
             return ResponseEntity.status(401).body(UNAUTHORIZED);
@@ -92,7 +91,7 @@ public class VideoController {
     public ResponseEntity<Object> likeVideo(@RequestParam("token") String token,
             @RequestParam("videoId") String videoId) {
         if (!TokenManager.verify(token))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -108,7 +107,7 @@ public class VideoController {
     public ResponseEntity<Object> addView(@RequestParam("videoId") String videoId,
             @RequestParam("token") String token) {
         if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -125,7 +124,7 @@ public class VideoController {
             @RequestParam("videoId") String videoId,
             @RequestParam("comment") String comment) {
         if (!TokenManager.verify(token))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -142,7 +141,7 @@ public class VideoController {
             @PathVariable("token") String token,
             @PathVariable("bucketName") String bucketName) {
         if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -162,7 +161,7 @@ public class VideoController {
             @PathVariable("token") String token,
             @PathVariable("bucketName") String bucketName) {
         if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -181,7 +180,7 @@ public class VideoController {
     public ResponseEntity<Object> getVideoInfo(@PathVariable("videoId") String videoId,
             @PathVariable("token") String token) {
         if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -197,7 +196,7 @@ public class VideoController {
     public ResponseEntity<Object> getAllVideos(@PathVariable("token") String token) {
         try {
             if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
-                return ResponseEntity.status(401).body(INVALIDTOKEN);
+                return ResponseEntity.status(401).body(INVALID_TOKEN);
 
             TokenManager.updateTokenLastTimeUsed(token);
 
@@ -211,7 +210,7 @@ public class VideoController {
     @GetMapping("/getalltrendingvideos/{token}")
     public ResponseEntity<Object> getAllTrendingVideos(@PathVariable("token") String token) {
         if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -227,7 +226,7 @@ public class VideoController {
     public ResponseEntity<Object> getAllVideosByUser(@PathVariable("userId") String userId,
             @PathVariable("token") String token) {
         if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -242,7 +241,7 @@ public class VideoController {
     @GetMapping("/getallnewvideos/{token}")
     public ResponseEntity<Object> getAllNewVideos(@PathVariable("token") String token) {
         if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -258,7 +257,7 @@ public class VideoController {
     public ResponseEntity<Object> getComments(@PathVariable("videoId") String videoId,
             @PathVariable("token") String token) {
         if (!TokenManager.verify(token) && !token.equals(UNREGISTERED))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -274,7 +273,7 @@ public class VideoController {
     public ResponseEntity<Object> getUserLikes(
             @PathVariable("token") String token) {
         if (!TokenManager.verify(token))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
+            return ResponseEntity.status(401).body(INVALID_TOKEN);
 
         TokenManager.updateTokenLastTimeUsed(token);
 
@@ -283,47 +282,6 @@ public class VideoController {
             return ResponseEntity.ok(videoService.getUserLikes(token));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error getting user likes");
-        }
-    }
-
-    @Update("/changedescription")
-    public ResponseEntity<Object> changeDescription(@RequestParam("token") String token,
-            @RequestParam("videoId") String videoId, @RequestParam("description") String description) {
-        if (!TokenManager.verify(token))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
-
-        if (Boolean.FALSE.equals(TokenManager.verifyTokenAccess(token, TokenManager.getUser(token).getId(), VIDEO))) {
-            return ResponseEntity.status(401).body(UNAUTHORIZED);
-        }
-
-        TokenManager.updateTokenLastTimeUsed(token);
-
-        try {
-            VideoService videoService = new VideoService();
-            return ResponseEntity.ok(videoService.changeDescription(videoId, description));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error changing description");
-        }
-    }
-
-    @Update("/changetitle")
-    public ResponseEntity<Object> changeTitle(@RequestParam("token") String token,
-            @RequestParam("videoId") String videoId,
-            @RequestParam("title") String title) {
-        if (!TokenManager.verify(token))
-            return ResponseEntity.status(401).body(INVALIDTOKEN);
-
-        if (Boolean.FALSE.equals(TokenManager.verifyTokenAccess(token, TokenManager.getUser(token).getId(), VIDEO))) {
-            return ResponseEntity.status(401).body(UNAUTHORIZED);
-        }
-
-        TokenManager.updateTokenLastTimeUsed(token);
-
-        try {
-            VideoService videoService = new VideoService();
-            return ResponseEntity.ok(videoService.changeTitle(videoId, title));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error changing title");
         }
     }
 

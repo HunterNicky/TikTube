@@ -24,3 +24,16 @@ hs_err_pid*
 replay_pid*
 
 ./wrapper
+
+### VS Code ###
+.vscode/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+*.idea/

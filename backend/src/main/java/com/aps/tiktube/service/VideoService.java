@@ -1,7 +1,6 @@
 package com.aps.tiktube.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -19,26 +18,23 @@ import com.aps.tiktube.model.video.Comments;
 import com.aps.tiktube.model.video.Like;
 import com.aps.tiktube.model.video.Video;
 import com.aps.tiktube.model.video.Views;
-import com.aps.tiktube.security.TokenManager;
+
+import static com.aps.tiktube.security.TokenManager.*;
 
 @Service
 public class VideoService {
 
-    private static final String VIDEONOTFOUND = "Video not found";
-    private static final String VIDEOID = "video_id";
+    private static final String VIDEO_NOT_FOUND = "Video not found";
+    private static final String VIDEO_ID = "video_id";
     private static final String VIDEO = "Video";
 
     /**
      * Upload a video
      * 
-     * @param file
-     * @param token
-     * @param title
-     * @param description
      * @return Result
      */
     public String uploadVideo(MultipartFile file, String token, String title, String description) {
-        User user = TokenManager.getUser(token);
+        User user = getUser(token);
         UserFileService userFileService = new UserFileService(user);
 
         Video video = new Video();
@@ -54,7 +50,7 @@ public class VideoService {
         video.save();
 
         JSONObject response = new JSONObject();
-        response.put(VIDEOID, videoId);
+        response.put(VIDEO_ID, videoId);
         response.put("id", video.getId());
 
         return response.toString();
@@ -63,13 +59,10 @@ public class VideoService {
     /**
      * Add a thumbnail to a video
      * 
-     * @param file
-     * @param token
-     * @param videoId
      * @return Result
      */
     public String addThumbnail(MultipartFile file, String token, String videoId) {
-        User user = TokenManager.getUser(token);
+        User user = getUser(token);
         UserFileService userFileService = new UserFileService(user);
 
         Access<Video> videoAccess = new Access<>(Video.class);
@@ -78,7 +71,7 @@ public class VideoService {
         videoAccess.close();
 
         if (video == null) {
-            return VIDEONOTFOUND;
+            return VIDEO_NOT_FOUND;
         }
 
         video.setThumbnailId(userFileService.getFileId(file, video, "Thumbnail"));
@@ -90,13 +83,10 @@ public class VideoService {
     /**
      * Add a comment to a video
      * 
-     * @param token
-     * @param videoId
-     * @param comment
      * @return Result
      */
     public String addComment(String token, String videoId, String comment) {
-        User user = TokenManager.getUser(token);
+        User user = getUser(token);
 
         Access<Video> videoAccess = new Access<>(Video.class);
 
@@ -104,7 +94,7 @@ public class VideoService {
         videoAccess.close();
 
         if (video == null) {
-            return VIDEONOTFOUND;
+            return VIDEO_NOT_FOUND;
         }
 
         Comments comments = new Comments();
@@ -121,19 +111,17 @@ public class VideoService {
     /**
      * Add views to a video
      * 
-     * @param videoId
-     * @param token
      * @return Result
      */
     public String addViews(String videoId, String token) {
-        User user = TokenManager.getUser(token);
+        User user = getUser(token);
         Access<Video> videoAccess = new Access<>(Video.class);
 
         Video video = videoAccess.getById(videoId);
         videoAccess.close();
 
         if (video == null) {
-            return VIDEONOTFOUND;
+            return VIDEO_NOT_FOUND;
         }
 
         Views views = new Views();
@@ -148,19 +136,17 @@ public class VideoService {
     /**
      * Like a video
      * 
-     * @param videoId
-     * @param token
      * @return Result
      */
     public String likeVideo(String videoId, String token) {
-        User user = TokenManager.getUser(token);
+        User user = getUser(token);
         Access<Video> videoAccess = new Access<>(Video.class);
 
         Video video = videoAccess.getById(videoId);
         videoAccess.close();
 
         if (video == null) {
-            return VIDEONOTFOUND;
+            return VIDEO_NOT_FOUND;
         }
 
         Like like = new Like();
@@ -175,7 +161,6 @@ public class VideoService {
     /**
      * Delete a video
      * 
-     * @param videoId
      * @return Result
      */
     public String deleteVideo(String videoId) {
@@ -185,9 +170,9 @@ public class VideoService {
         Access<Views> viewsAccess = new Access<>(Views.class);
 
         Video video = videoAccess.getById(videoId);
-        List<Comments> comments = commentsAccess.where(Arrays.asList(VIDEOID), Arrays.asList(videoId));
-        List<Like> likes = likeAccess.where(Arrays.asList(VIDEOID), Arrays.asList(videoId));
-        List<Views> views = viewsAccess.where(Arrays.asList(VIDEOID), Arrays.asList(videoId));
+        List<Comments> comments = commentsAccess.where(List.of(VIDEO_ID), Collections.singletonList(videoId));
+        List<Like> likes = likeAccess.where(List.of(VIDEO_ID), Collections.singletonList(videoId));
+        List<Views> views = viewsAccess.where(List.of(VIDEO_ID), Collections.singletonList(videoId));
 
         videoAccess.close();
         commentsAccess.close();
@@ -195,7 +180,7 @@ public class VideoService {
         viewsAccess.close();
 
         if (video == null) {
-            return VIDEONOTFOUND;
+            return VIDEO_NOT_FOUND;
         }
 
         for (Comments comment : comments) {
@@ -215,12 +200,11 @@ public class VideoService {
     /**
      * Get the number of views of a video
      * 
-     * @param videoId
      * @return Number of views
      */
     public String numOfViews(String videoId) {
         Access<Views> viewsAccess = new Access<>(Views.class);
-        List<Views> views = viewsAccess.where(VIDEOID, videoId);
+        List<Views> views = viewsAccess.where(VIDEO_ID, videoId);
         viewsAccess.close();
         return Integer.toString(views.size());
     }
@@ -228,34 +212,18 @@ public class VideoService {
     /**
      * Get the number of likes of a video
      * 
-     * @param videoId
      * @return Number of likes
      */
     public String numOfLikes(String videoId) {
         Access<Like> likeAccess = new Access<>(Like.class);
-        List<Like> likes = likeAccess.where(VIDEOID, videoId);
+        List<Like> likes = likeAccess.where(VIDEO_ID, videoId);
         likeAccess.close();
         return Integer.toString(likes.size());
     }
 
     /**
-     * Get the number of comments of a video
-     * 
-     * @param videoId
-     * @return Number of comments
-     */
-    public String numOfComments(String videoId) {
-        Access<Comments> commentsAccess = new Access<>(Comments.class);
-        List<Comments> comments = commentsAccess.where(Arrays.asList(VIDEOID), Arrays.asList(videoId));
-        commentsAccess.close();
-        return Integer.toString(comments.size());
-    }
-
-    /**
      * Change the description of a video
      * 
-     * @param videoId
-     * @param description
      * @return Result
      */
     public String changeDescription(String videoId, String description) {
@@ -264,7 +232,7 @@ public class VideoService {
         videoAccess.close();
 
         if (video == null) {
-            return VIDEONOTFOUND;
+            return VIDEO_NOT_FOUND;
         }
 
         video.setDescripton(description);
@@ -276,8 +244,6 @@ public class VideoService {
     /**
      * Change the title of a video
      * 
-     * @param videoId
-     * @param title
      * @return Result
      */
     public String changeTitle(String videoId, String title) {
@@ -286,7 +252,7 @@ public class VideoService {
         videoAccess.close();
 
         if (video == null) {
-            return VIDEONOTFOUND;
+            return VIDEO_NOT_FOUND;
         }
 
         video.setVideoName(title);
@@ -298,7 +264,6 @@ public class VideoService {
     /**
      * Get the information of a video
      * 
-     * @param videoId
      * @return Video information
      */
     public String getVideoInfo(String videoId) {
@@ -307,7 +272,7 @@ public class VideoService {
         videoAccess.close();
 
         if (!video.getExist()) {
-            return VIDEONOTFOUND;
+            return VIDEO_NOT_FOUND;
         }
 
         Document videoInfo = video.toDocument();
@@ -322,12 +287,11 @@ public class VideoService {
     /**
      * Get the comments of a video
      * 
-     * @param videoId
      * @return Comments
      */
     public String getComments(String videoId) {
         Access<Comments> commentsAccess = new Access<>(Comments.class);
-        List<Comments> comments = commentsAccess.where(VIDEOID, videoId);
+        List<Comments> comments = commentsAccess.where(VIDEO_ID, videoId);
         commentsAccess.close();
 
         JSONArray commentsInfo = new JSONArray();
@@ -369,11 +333,9 @@ public class VideoService {
     /**
      * Sort the documents by a label
      * 
-     * @param documents
-     * @param label
      * @return Sorted documents
      */
-    private static List<Document> sortDocumentByLabel(List<Document> documentos, String label) {
+    private static List<Document> sortDocumentByLabel(List<Document> documents, String label) {
         Comparator<Document> comparator = (d1, d2) -> {
             Object valor1 = d1.get(label);
             Object valor2 = d2.get(label);
@@ -389,9 +351,9 @@ public class VideoService {
             }
         };
 
-        Collections.sort(documentos, comparator);
+        documents.sort(comparator);
 
-        return documentos;
+        return documents;
     }
 
     /**
@@ -455,7 +417,6 @@ public class VideoService {
     /**
      * Get the videos of a user
      * 
-     * @param token
      * @return Videos
      */
     public String getUserVideos(String userId) {
@@ -484,11 +445,10 @@ public class VideoService {
     /**
      * Get the videos of a user liked
      * 
-     * @param token
      * @return Videos liked
      */
     public String getUserLikes(String token) {
-        User user = TokenManager.getUser(token);
+        User user = getUser(token);
         Access<Like> likeAccess = new Access<>(Like.class);
         List<Like> likes = likeAccess.where("user_id", user.getId());
         likeAccess.close();

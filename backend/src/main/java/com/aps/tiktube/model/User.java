@@ -14,39 +14,15 @@ public class User extends Entity<User> {
         return this.userName;
     }
 
-    public void setUserName(String value) {
-        this.userName = value;
-    }
-
     private String email;
 
     public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(String value) {
-        this.email = value;
-    }
-
     private Integer age;
 
-    public Integer getAge() {
-        return this.age;
-    }
-
-    public void setAge(Integer value) {
-        this.age = value;
-    }
-
     private Date birthDate;
-
-    public Date getBirthDate() {
-        return this.birthDate;
-    }
-
-    public void setBirthDate(Date value) {
-        this.birthDate = value;
-    }
 
     private String password;
 
@@ -60,23 +36,7 @@ public class User extends Entity<User> {
 
     private String profilePictureId;
 
-    public String getProfilePictureId() {
-        return this.profilePictureId;
-    }
-
-    public void setProfilePictureId(String value) {
-        this.profilePictureId = value;
-    }
-
     private Boolean isAdmin = false;
-
-    public Boolean getIsAdmin() {
-        return this.isAdmin;
-    }
-
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
 
     @Override
     public Class<User> getTClass() {
@@ -117,9 +77,8 @@ public class User extends Entity<User> {
         if (value != null) {
             try {
                 SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-                Date parsedDate = inputFormat.parse(value.toString());
 
-                this.birthDate = parsedDate;
+                this.birthDate = inputFormat.parse(value.toString());
             } catch (ParseException e) {
 
                 e.printStackTrace();
