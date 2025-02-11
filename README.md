@@ -30,7 +30,6 @@ A modern video sharing platform clone developed as part of the Analysis and Deve
 - Vite
 - Axios
 - React Router
-- Tailwind CSS
 
 ## 📦 Installation
 
